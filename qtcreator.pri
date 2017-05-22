@@ -56,24 +56,8 @@ defineReplace(stripSrcDir) {
     return($$relative_path($$absolute_path($$1, $$OUT_PWD), $$_PRO_FILE_PWD_))
 }
 
-QTC_BUILD_TESTS = $$(QTC_BUILD_TESTS)
-!isEmpty(QTC_BUILD_TESTS):TEST = $$QTC_BUILD_TESTS
-
-!isEmpty(BUILD_TESTS):TEST = 1
-
-isEmpty(TEST):CONFIG(debug, debug|release) {
-    !debug_and_release|build_pass {
-        TEST = 1
-    }
-}
-
 isEmpty(IDE_LIBRARY_BASENAME) {
     IDE_LIBRARY_BASENAME = lib
-}
-
-equals(TEST, 1) {
-    QT +=testlib
-    DEFINES += WITH_TESTS
 }
 
 IDE_SOURCE_TREE = $$PWD

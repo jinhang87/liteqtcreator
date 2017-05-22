@@ -4,13 +4,13 @@ dll {
     DEFINES += QTCREATOR_UTILS_STATIC_LIB
 }
 
-QT += gui network qml
+#QT += gui network qml
 
-CONFIG += exceptions # used by portlist.cpp, textfileformat.cpp, and ssh/*
+#CONFIG += exceptions # used by portlist.cpp, textfileformat.cpp, and ssh/*
 
-win32: LIBS += -luser32 -lshell32
+#win32: LIBS += -luser32 -lshell32
 # PortsGatherer
-win32: LIBS += -liphlpapi -lws2_32
+#win32: LIBS += -liphlpapi -lws2_32
 
 SOURCES += \
     $$PWD/qtcassert.cpp
