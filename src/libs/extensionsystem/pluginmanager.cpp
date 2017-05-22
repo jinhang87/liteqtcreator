@@ -46,10 +46,10 @@
 #include <QSysInfo>
 
 #include <utils/algorithm.h>
-#include <utils/executeondestruction.h>
-#include <utils/hostosinfo.h>
+//#include <utils/executeondestruction.h>
+//#include <utils/hostosinfo.h>
 #include <utils/qtcassert.h>
-#include <utils/synchronousprocess.h>
+//#include <utils/synchronousprocess.h>
 
 #ifdef WITH_TESTS
 #include <utils/hostosinfo.h>
@@ -1604,6 +1604,7 @@ void PluginManagerPrivate::profilingSummary() const
 
 static inline QString getPlatformName()
 {
+#if 0
     if (HostOsInfo::isMacHost()) {
         if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_0) {
             QString result = QLatin1String("OS X");
@@ -1662,6 +1663,7 @@ static inline QString getPlatformName()
             result += QLatin1String(" 10");
         return result;
     }
+#endif
     return QLatin1String("Unknown");
 }
 
