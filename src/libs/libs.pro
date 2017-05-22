@@ -5,19 +5,7 @@ TEMPLATE  = subdirs
 SUBDIRS   = \
     aggregation \
     extensionsystem \
-    utils \
-    languageutils \
-    cplusplus \
-    modelinglib \
-    qmljs \
-    qmldebug \
-    qmleditorwidgets \
-    glsl \
-    ssh \
-    timeline \
-    sqlite \
-    clangbackendipc \
-    flamegraph
+    utils 
 
 for(l, SUBDIRS) {
     QTC_LIB_DEPENDS =
