@@ -1,6 +1,0 @@
-import qbs
-
-Project {
-    references: [
-    ]
-}

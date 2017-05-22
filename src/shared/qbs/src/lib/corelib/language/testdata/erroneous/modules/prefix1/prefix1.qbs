@@ -1,4 +1,0 @@
-import qbs
-
-Module {
-}
