@@ -9,8 +9,7 @@ unix:LIBS += $$QMAKE_LIBS_DYNLOAD
     DEFINES += IDE_TEST_DIR=\\\"$$IDE_SOURCE_TREE\\\"
 }
 
-HEADERS += pluginerrorview.h \
-    plugindetailsview.h \
+HEADERS += \
     invoker.h \
     iplugin.h \
     iplugin_p.h \
@@ -18,20 +17,11 @@ HEADERS += pluginerrorview.h \
     pluginmanager.h \
     pluginmanager_p.h \
     pluginspec.h \
-    pluginspec_p.h \
-    pluginview.h \
-    optionsparser.h \
-    pluginerroroverview.h
-SOURCES += pluginerrorview.cpp \
-    plugindetailsview.cpp \
+    pluginspec_p.h 
+
+SOURCES += \
     invoker.cpp \
     iplugin.cpp \
     pluginmanager.cpp \
-    pluginspec.cpp \
-    pluginview.cpp \
-    optionsparser.cpp \
-    pluginerroroverview.cpp
-FORMS += \
-    pluginerrorview.ui \
-    plugindetailsview.ui \
-    pluginerroroverview.ui
+    pluginspec.cpp
+

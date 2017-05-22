@@ -27,7 +27,6 @@
 #include "pluginmanager_p.h"
 #include "pluginspec.h"
 #include "pluginspec_p.h"
-#include "optionsparser.h"
 #include "iplugin.h"
 
 #include <QCoreApplication>
@@ -432,6 +431,7 @@ static QString filled(const QString &s, int min)
 QString PluginManager::systemInformation() const
 {
     QString result;
+    #if 0
     const QString qtdiagBinary = HostOsInfo::withExecutableSuffix(
                 QLibraryInfo::location(QLibraryInfo::BinariesPath) + "/qtdiag");
     SynchronousProcess qtdiagProc;
@@ -448,6 +448,7 @@ QString PluginManager::systemInformation() const
         result += QLatin1String(spec->isEffectivelyEnabled() ? "+ " : "  ") + filled(spec->name(), size) +
                   " " + spec->version() + "\n";
     }
+    #endif
     return result;
 }
 
@@ -673,8 +674,9 @@ bool PluginManager::parseOptions(const QStringList &args,
     QMap<QString, QString> *foundAppOptions,
     QString *errorString)
 {
-    OptionsParser options(args, appOptions, foundAppOptions, errorString, d);
-    return options.parse();
+    //OptionsParser options(args, appOptions, foundAppOptions, errorString, d);
+    //return options.parse();
+    return false;
 }
 
 
@@ -710,6 +712,7 @@ static inline void formatOption(QTextStream &str,
 
 void PluginManager::formatOptions(QTextStream &str, int optionIndentation, int descriptionIndentation)
 {
+#if 0
     formatOption(str, QLatin1String(OptionsParser::LOAD_OPTION),
                  QLatin1String("plugin"), QLatin1String("Load <plugin> and all plugins that it requires"),
                  optionIndentation, descriptionIndentation);
@@ -738,6 +741,7 @@ void PluginManager::formatOptions(QTextStream &str, int optionIndentation, int d
     formatOption(str, QString::fromLatin1(OptionsParser::NOTEST_OPTION),
                  QLatin1String("plugin"), QLatin1String("Exclude all of the plugin's tests from the test run"),
                  optionIndentation, descriptionIndentation);
+#endif
 #endif
 }
 

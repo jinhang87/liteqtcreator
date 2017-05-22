@@ -24,7 +24,6 @@
 ****************************************************************************/
 
 #include <extensionsystem/iplugin.h>
-#include <extensionsystem/pluginerroroverview.h>
 #include <extensionsystem/pluginmanager.h>
 #include <extensionsystem/pluginspec.h>
 #include <qtsingleapplication.h>

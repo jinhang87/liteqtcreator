@@ -14,8 +14,4 @@ for(l, SUBDIRS) {
     $$lv = $$QTC_LIB_DEPENDS
 }
 
-SUBDIRS += \
-    utils/process_stub.pro
-
-win32:SUBDIRS += utils/process_ctrlc_stub.pro
 
