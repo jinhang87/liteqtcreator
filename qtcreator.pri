@@ -1,9 +1,9 @@
 !isEmpty(QTCREATOR_PRI_INCLUDED):error("qtcreator.pri already included")
 QTCREATOR_PRI_INCLUDED = 1
 
-QTCREATOR_VERSION = 4.2.1
+PROJ_VERSION = 4.2.1
 QTCREATOR_COMPAT_VERSION = 4.2.0
-VERSION = $$QTCREATOR_VERSION
+VERSION = $$PROJ_VERSION
 BINARY_ARTIFACTS_BRANCH = 4.2
 
 defineReplace(qtLibraryTargetName) {
@@ -22,7 +22,7 @@ defineReplace(qtLibraryTargetName) {
 defineReplace(qtLibraryName) {
    RET = $$qtLibraryTargetName($$1)
    win32 {
-      VERSION_LIST = $$split(QTCREATOR_VERSION, .)
+      VERSION_LIST = $$split(PROJ_VERSION, .)
       RET = $$RET$$first(VERSION_LIST)
    }
    return($$RET)
