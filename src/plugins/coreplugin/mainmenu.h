@@ -7,6 +7,9 @@ namespace Ui {
 class mainmenu;
 }
 
+namespace Core {
+namespace Internal {
+
 class mainmenu : public QWidget
 {
     Q_OBJECT
@@ -18,5 +21,8 @@ public:
 private:
     Ui::mainmenu *ui;
 };
+
+} // namespace Internal
+} // namespace Core
 
 #endif // MAINMENU_H

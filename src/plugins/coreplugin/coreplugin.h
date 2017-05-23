@@ -30,7 +30,7 @@
 QT_BEGIN_NAMESPACE
 class QMenu;
 QT_END_NAMESPACE
-class mainmenu;
+
 
 namespace Utils {
 //class PathChooser;
@@ -42,7 +42,7 @@ namespace Core {
 //class DesignMode;
 
 namespace Internal {
-
+class mainmenu;
 //class EditMode;
 //class Locator;
 

@@ -3,6 +3,9 @@
 #include <QPainter>
 #include <QListWidgetItem>
 
+namespace Core {
+namespace Internal {
+
 mainmenu::mainmenu(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::mainmenu)
@@ -32,3 +35,7 @@ mainmenu::~mainmenu()
 {
     delete ui;
 }
+
+} // namespace Internal
+} // namespace Core
+
