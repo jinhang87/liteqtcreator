@@ -9,6 +9,8 @@ unix:LIBS += $$QMAKE_LIBS_DYNLOAD
     DEFINES += IDE_TEST_DIR=\\\"$$IDE_SOURCE_TREE\\\"
 }
 
+QT -= gui widgets
+
 HEADERS += \
     invoker.h \
     iplugin.h \

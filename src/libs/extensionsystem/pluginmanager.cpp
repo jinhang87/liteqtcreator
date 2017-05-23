@@ -28,11 +28,6 @@
 #include <utils/qtcassert.h>
 //#include <utils/synchronousprocess.h>
 
-#ifdef WITH_TESTS
-#include <utils/hostosinfo.h>
-#include <QTest>
-#endif
-
 #include <functional>
 
 Q_LOGGING_CATEGORY(pluginLog, "qtc.extensionsystem")
@@ -405,30 +400,6 @@ static QString filled(const QString &s, int min)
     return s + QString(qMax(0, min - s.size()), ' ');
 }
 
-QString PluginManager::systemInformation() const
-{
-    QString result;
-    #if 0
-    const QString qtdiagBinary = HostOsInfo::withExecutableSuffix(
-                QLibraryInfo::location(QLibraryInfo::BinariesPath) + "/qtdiag");
-    SynchronousProcess qtdiagProc;
-    const SynchronousProcessResponse response = qtdiagProc.runBlocking(qtdiagBinary, QStringList());
-    if (response.result == SynchronousProcessResponse::Finished)
-        result += response.allOutput() + "\n";
-    result += "Plugin information:\n\n";
-    auto longestSpec = std::max_element(plugins().cbegin(), plugins().cend(),
-                                        [](const PluginSpec *left, const PluginSpec *right) {
-                                            return left->name().size() < right->name().size();
-                                        });
-    int size = (*longestSpec)->name().size();
-    for (const PluginSpec *spec : plugins()) {
-        result += QLatin1String(spec->isEffectivelyEnabled() ? "+ " : "  ") + filled(spec->name(), size) +
-                  " " + spec->version() + "\n";
-    }
-    #endif
-    return result;
-}
-
 /*!
     The list of paths were the plugin manager searches for plugins.
 
@@ -631,32 +602,6 @@ void PluginManager::remoteArguments(const QString &serializedArgument, QObject *
         delete socket;
 }
 
-/*!
-    Takes the list of command line options in \a args and parses them.
-    The plugin manager itself might process some options itself directly (-noload <plugin>), and
-    adds options that are registered by plugins to their plugin specs.
-    The caller (the application) may register itself for options via the \a appOptions list, containing pairs
-    of "option string" and a bool that indicates if the option requires an argument.
-    Application options always override any plugin's options.
-
-    \a foundAppOptions is set to pairs of ("option string", "argument") for any application options that were found.
-    The command line options that were not processed can be retrieved via the arguments() function.
-    If an error occurred (like missing argument for an option that requires one), \a errorString contains
-    a descriptive message of the error.
-
-    Returns if there was an error.
- */
-bool PluginManager::parseOptions(const QStringList &args,
-    const QMap<QString, bool> &appOptions,
-    QMap<QString, QString> *foundAppOptions,
-    QString *errorString)
-{
-    //OptionsParser options(args, appOptions, foundAppOptions, errorString, d);
-    //return options.parse();
-    return false;
-}
-
-
 
 static inline void indent(QTextStream &str, int indent)
 {
@@ -681,62 +626,6 @@ static inline void formatOption(QTextStream &str,
         indent(str, descriptionIndentation);
     }
     str << description << '\n';
-}
-
-/*!
-    Formats the startup options of the plugin manager for command line help.
-*/
-
-void PluginManager::formatOptions(QTextStream &str, int optionIndentation, int descriptionIndentation)
-{
-#if 0
-    formatOption(str, QLatin1String(OptionsParser::LOAD_OPTION),
-                 QLatin1String("plugin"), QLatin1String("Load <plugin> and all plugins that it requires"),
-                 optionIndentation, descriptionIndentation);
-    formatOption(str, QLatin1String(OptionsParser::LOAD_OPTION) + QLatin1String(" all"),
-                 QString(), QLatin1String("Load all available plugins"),
-                 optionIndentation, descriptionIndentation);
-    formatOption(str, QLatin1String(OptionsParser::NO_LOAD_OPTION),
-                 QLatin1String("plugin"), QLatin1String("Do not load <plugin> and all plugins that require it"),
-                 optionIndentation, descriptionIndentation);
-    formatOption(str, QLatin1String(OptionsParser::NO_LOAD_OPTION) + QLatin1String(" all"),
-                 QString(), QString::fromLatin1("Do not load any plugin (useful when "
-                                                "followed by one or more \"%1\" arguments)")
-                 .arg(QLatin1String(OptionsParser::LOAD_OPTION)),
-                 optionIndentation, descriptionIndentation);
-    formatOption(str, QLatin1String(OptionsParser::PROFILE_OPTION),
-                 QString(), QLatin1String("Profile plugin loading"),
-                 optionIndentation, descriptionIndentation);
-#ifdef WITH_TESTS
-    formatOption(str, QString::fromLatin1(OptionsParser::TEST_OPTION)
-                 + QLatin1String(" <plugin>[,testfunction[:testdata]]..."), QString(),
-                 QLatin1String("Run plugin's tests (by default a separate settings path is used)"),
-                 optionIndentation, descriptionIndentation);
-    formatOption(str, QString::fromLatin1(OptionsParser::TEST_OPTION) + QLatin1String(" all"),
-                 QString(), QLatin1String("Run tests from all plugins"),
-                 optionIndentation, descriptionIndentation);
-    formatOption(str, QString::fromLatin1(OptionsParser::NOTEST_OPTION),
-                 QLatin1String("plugin"), QLatin1String("Exclude all of the plugin's tests from the test run"),
-                 optionIndentation, descriptionIndentation);
-#endif
-#endif
-}
-
-/*!
-    Formats the plugin options of the plugin specs for command line help.
-*/
-
-void PluginManager::formatPluginOptions(QTextStream &str, int optionIndentation, int descriptionIndentation)
-{
-    // Check plugins for options
-    foreach (PluginSpec *ps, d->pluginSpecs) {
-        const PluginSpec::PluginArgumentDescriptions pargs = ps->argumentDescriptions();
-        if (!pargs.empty()) {
-            str << "\nPlugin: " <<  ps->name() << '\n';
-            foreach (PluginArgumentDescription pad, pargs)
-                formatOption(str, pad.name, pad.parameter, pad.description, optionIndentation, descriptionIndentation);
-        }
-    }
 }
 
 /*!
@@ -833,10 +722,6 @@ void PluginManagerPrivate::nextDelayedInitialize()
         delayedInitializeTimer = 0;
         profilingSummary();
         emit q->initializationDone();
-#ifdef WITH_TESTS
-        if (q->testRunRequested())
-            startTests();
-#endif
     } else {
         delayedInitializeTimer->start();
     }
@@ -925,233 +810,6 @@ void PluginManagerPrivate::deleteAll()
         loadPlugin(spec, PluginSpec::Deleted);
     });
 }
-
-#ifdef WITH_TESTS
-
-typedef QMap<QObject *, QStringList> TestPlan; // Object -> selected test functions
-typedef QMapIterator<QObject *, QStringList> TestPlanIterator;
-
-static bool isTestFunction(const QMetaMethod &metaMethod)
-{
-    static const QList<QByteArray> blackList = QList<QByteArray>()
-        << "initTestCase()" << "cleanupTestCase()" << "init()" << "cleanup()";
-
-    if (metaMethod.methodType() != QMetaMethod::Slot)
-        return false;
-
-    if (metaMethod.access() != QMetaMethod::Private)
-        return false;
-
-    const QByteArray signature = metaMethod.methodSignature();
-    if (blackList.contains(signature))
-        return false;
-
-    if (!signature.startsWith("test"))
-        return false;
-
-    if (signature.endsWith("_data()"))
-        return false;
-
-    return true;
-}
-
-static QStringList testFunctions(const QMetaObject *metaObject)
-{
-
-    QStringList functions;
-
-    for (int i = metaObject->methodOffset(); i < metaObject->methodCount(); ++i) {
-        const QMetaMethod metaMethod = metaObject->method(i);
-        if (isTestFunction(metaMethod)) {
-            const QByteArray signature = metaMethod.methodSignature();
-            const QString method = QString::fromLatin1(signature);
-            const QString methodName = method.left(method.size() - 2);
-            functions.append(methodName);
-        }
-    }
-
-    return functions;
-}
-
-static QStringList matchingTestFunctions(const QStringList &testFunctions,
-                                         const QString &matchText)
-{
-    // There might be a test data suffix like in "testfunction:testdata1".
-    QString testFunctionName = matchText;
-    QString testDataSuffix;
-    const int index = testFunctionName.indexOf(QLatin1Char(':'));
-    if (index != -1) {
-        testDataSuffix = testFunctionName.mid(index);
-        testFunctionName = testFunctionName.left(index);
-    }
-
-    const QRegExp regExp(testFunctionName, Qt::CaseSensitive, QRegExp::Wildcard);
-    QStringList matchingFunctions;
-    foreach (const QString &testFunction, testFunctions) {
-        if (regExp.exactMatch(testFunction)) {
-            // If the specified test data is invalid, the QTest framework will
-            // print a reasonable error message for us.
-            matchingFunctions.append(testFunction + testDataSuffix);
-        }
-    }
-
-    return matchingFunctions;
-}
-
-static QObject *objectWithClassName(const QList<QObject *> &objects, const QString &className)
-{
-    return Utils::findOr(objects, 0, [className] (QObject *object) -> bool {
-        QString candidate = QString::fromUtf8(object->metaObject()->className());
-        const int colonIndex = candidate.lastIndexOf(QLatin1Char(':'));
-        if (colonIndex != -1 && colonIndex < candidate.size() - 1)
-            candidate = candidate.mid(colonIndex + 1);
-        return candidate == className;
-    });
-}
-
-static int executeTestPlan(const TestPlan &testPlan)
-{
-    int failedTests = 0;
-
-    TestPlanIterator it(testPlan);
-    while (it.hasNext()) {
-        it.next();
-        QObject *testObject = it.key();
-        QStringList functions = it.value();
-
-        // Don't run QTest::qExec without any test functions, that'd run *all* slots as tests.
-        if (functions.isEmpty())
-            continue;
-
-        functions.removeDuplicates();
-
-        // QTest::qExec() expects basically QCoreApplication::arguments(),
-        QStringList qExecArguments = QStringList()
-                << QLatin1String("arg0") // fake application name
-                << QLatin1String("-maxwarnings") << QLatin1String("0"); // unlimit output
-        qExecArguments << functions;
-        // avoid being stuck in QTBUG-24925
-        if (!HostOsInfo::isWindowsHost())
-            qExecArguments << "-nocrashhandler";
-        failedTests += QTest::qExec(testObject, qExecArguments);
-    }
-
-    return failedTests;
-}
-
-/// Resulting plan consists of all test functions of the plugin object and
-/// all test functions of all test objects of the plugin.
-static TestPlan generateCompleteTestPlan(IPlugin *plugin, const QList<QObject *> &testObjects)
-{
-    TestPlan testPlan;
-
-    testPlan.insert(plugin, testFunctions(plugin->metaObject()));
-    foreach (QObject *testObject, testObjects) {
-        const QStringList allFunctions = testFunctions(testObject->metaObject());
-        testPlan.insert(testObject, allFunctions);
-    }
-
-    return testPlan;
-}
-
-/// Resulting plan consists of all matching test functions of the plugin object
-/// and all matching functions of all test objects of the plugin. However, if a
-/// match text denotes a test class, all test functions of that will be
-/// included and the class will not be considered further.
-///
-/// Since multiple match texts can match the same function, a test function might
-/// be included multiple times for a test object.
-static TestPlan generateCustomTestPlan(IPlugin *plugin, const QList<QObject *> &testObjects,
-                                       const QStringList &matchTexts)
-{
-    TestPlan testPlan;
-
-    const QStringList testFunctionsOfPluginObject = testFunctions(plugin->metaObject());
-    QStringList matchedTestFunctionsOfPluginObject;
-    QStringList remainingMatchTexts = matchTexts;
-    QList<QObject *> remainingTestObjectsOfPlugin = testObjects;
-
-    while (!remainingMatchTexts.isEmpty()) {
-        const QString matchText = remainingMatchTexts.takeFirst();
-        bool matched = false;
-
-        if (QObject *testObject = objectWithClassName(remainingTestObjectsOfPlugin, matchText)) {
-            // Add all functions of the matching test object
-            matched = true;
-            testPlan.insert(testObject, testFunctions(testObject->metaObject()));
-            remainingTestObjectsOfPlugin.removeAll(testObject);
-
-        } else {
-            // Add all matching test functions of all remaining test objects
-            foreach (QObject *testObject, remainingTestObjectsOfPlugin) {
-                const QStringList allFunctions = testFunctions(testObject->metaObject());
-                const QStringList matchingFunctions = matchingTestFunctions(allFunctions,
-                                                                            matchText);
-                if (!matchingFunctions.isEmpty()) {
-                    matched = true;
-                    testPlan[testObject] += matchingFunctions;
-                }
-            }
-        }
-
-        const QStringList currentMatchedTestFunctionsOfPluginObject
-            = matchingTestFunctions(testFunctionsOfPluginObject, matchText);
-        if (!currentMatchedTestFunctionsOfPluginObject.isEmpty()) {
-            matched = true;
-            matchedTestFunctionsOfPluginObject += currentMatchedTestFunctionsOfPluginObject;
-        }
-
-        if (!matched) {
-            QTextStream out(stdout);
-            out << "No test function or class matches \"" << matchText
-                << "\" in plugin \"" << plugin->metaObject()->className()
-                << "\".\nAvailable functions:\n";
-            foreach (const QString &f, testFunctionsOfPluginObject)
-                out << "  " << f << '\n';
-            out << endl;
-        }
-    }
-
-    // Add all matching test functions of plugin
-    if (!matchedTestFunctionsOfPluginObject.isEmpty())
-        testPlan.insert(plugin, matchedTestFunctionsOfPluginObject);
-
-    return testPlan;
-}
-
-void PluginManagerPrivate::startTests()
-{
-    if (PluginManager::hasError()) {
-        qWarning("Errors occurred while loading plugins, skipping test run. "
-                 "For details, start without \"-test\" option.");
-        QTimer::singleShot(1, QCoreApplication::instance(), &QCoreApplication::quit);
-        return;
-    }
-
-    int failedTests = 0;
-    foreach (const PluginManagerPrivate::TestSpec &testSpec, testSpecs) {
-        IPlugin *plugin = testSpec.pluginSpec->plugin();
-        if (!plugin)
-            continue; // plugin not loaded
-
-        const QList<QObject *> testObjects = plugin->createTestObjects();
-        ExecuteOnDestruction deleteTestObjects([&]() { qDeleteAll(testObjects); });
-        Q_UNUSED(deleteTestObjects)
-
-        const bool hasDuplicateTestObjects = testObjects.size() != testObjects.toSet().size();
-        QTC_ASSERT(!hasDuplicateTestObjects, continue);
-        QTC_ASSERT(!testObjects.contains(plugin), continue);
-
-        const TestPlan testPlan = testSpec.testFunctionsOrObjects.isEmpty()
-                ? generateCompleteTestPlan(plugin, testObjects)
-                : generateCustomTestPlan(plugin, testObjects, testSpec.testFunctionsOrObjects);
-
-        failedTests += executeTestPlan(testPlan);
-    }
-
-    QTimer::singleShot(0, this, [failedTests]() { emit m_instance->testsFinished(failedTests); });
-}
-#endif
 
 /*!
     \internal

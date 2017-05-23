@@ -31,30 +31,8 @@ using namespace ExtensionSystem;
 
 enum { OptionIndent = 4, DescriptionIndent = 34 };
 
-const char appNameC[] = "Qt Creator";
+const char appNameC[] = "MVR UI";
 const char corePluginNameC[] = "Core";
-const char fixedOptionsC[] =
-" [OPTION]... [FILE]...\n"
-"Options:\n"
-"    -help                         Display this help\n"
-"    -version                      Display program version\n"
-"    -client                       Attempt to connect to already running first instance\n"
-"    -settingspath <path>          Override the default path where user settings are stored\n"
-"    -pid <pid>                    Attempt to connect to instance given by pid\n"
-"    -block                        Block until editor is closed\n"
-"    -pluginpath <path>            Add a custom search path for plugins\n";
-
-const char HELP_OPTION1[] = "-h";
-const char HELP_OPTION2[] = "-help";
-const char HELP_OPTION3[] = "/h";
-const char HELP_OPTION4[] = "--help";
-const char VERSION_OPTION[] = "-version";
-const char CLIENT_OPTION[] = "-client";
-const char SETTINGS_OPTION[] = "-settingspath";
-const char TEST_OPTION[] = "-test";
-const char PID_OPTION[] = "-pid";
-const char BLOCK_OPTION[] = "-block";
-const char PLUGINPATH_OPTION[] = "-pluginpath";
 
 typedef QList<PluginSpec *> PluginSpecSet;
 
@@ -77,11 +55,6 @@ static void displayHelpText(const QString &t)
     qWarning("%s", qPrintable(t));
 }
 
-static void displayError(const QString &t)
-{
-    qCritical("%s", qPrintable(t));
-}
-
 static void printVersion(const PluginSpec *coreplugin)
 {
     QString version;
@@ -92,62 +65,9 @@ static void printVersion(const PluginSpec *coreplugin)
     displayHelpText(version);
 }
 
-static void printHelp(const QString &a0)
+static inline void msgCoreLoadFailure(const QString &why)
 {
-    QString help;
-    QTextStream str(&help);
-    str << "Usage: " << a0 << fixedOptionsC;
-    PluginManager::formatOptions(str, OptionIndent, DescriptionIndent);
-    PluginManager::formatPluginOptions(str, OptionIndent, DescriptionIndent);
-    displayHelpText(help);
-}
-
-static inline QString msgCoreLoadFailure(const QString &why)
-{
-    #if 0
-    return QCoreApplication::translate("Application", "Failed to load core: %1").arg(why);
-    #else 
     qCritical("%s", qPrintable(why));
-    #endif
-}
-
-static inline int askMsgSendFailed()
-{
-    return QMessageBox::question(0, QApplication::translate("Application","Could not send message"),
-                                 QCoreApplication::translate("Application", "Unable to send command line arguments to the already running instance. "
-                                                             "It appears to be not responding. Do you want to start a new instance of Creator?"),
-                                 QMessageBox::Yes | QMessageBox::No | QMessageBox::Retry,
-                                 QMessageBox::Retry);
-}
-
-
-// taken from utils/fileutils.cpp. We can not use utils here since that depends app_version.h.
-static bool copyRecursively(const QString &srcFilePath,
-                            const QString &tgtFilePath)
-{
-    #if 0
-    QFileInfo srcFileInfo(srcFilePath);
-    if (srcFileInfo.isDir()) {
-        QDir targetDir(tgtFilePath);
-        targetDir.cdUp();
-        if (!targetDir.mkdir(Utils::FileName::fromString(tgtFilePath).fileName()))
-            return false;
-        QDir sourceDir(srcFilePath);
-        QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
-        foreach (const QString &fileName, fileNames) {
-            const QString newSrcFilePath
-                    = srcFilePath + QLatin1Char('/') + fileName;
-            const QString newTgtFilePath
-                    = tgtFilePath + QLatin1Char('/') + fileName;
-            if (!copyRecursively(newSrcFilePath, newTgtFilePath))
-                return false;
-        }
-    } else {
-        if (!QFile::copy(srcFilePath, tgtFilePath))
-            return false;
-    }
-    #endif
-    return true;
 }
 
 static inline QStringList getPluginPaths()
@@ -213,28 +133,26 @@ int main(int argc, char **argv)
     foreach (PluginSpec *spec, plugins) {
         if (spec->name() == QLatin1String(corePluginNameC)) {
             coreplugin = spec;
+            printVersion(coreplugin);
             break;
         }
     }
     if (!coreplugin) {
-        QString nativePaths = QDir::toNativeSeparators(pluginPaths.join(QLatin1Char(',')));
-        const QString reason = QCoreApplication::translate("Application", "Could not find Core plugin in %1").arg(nativePaths);
-        displayError(msgCoreLoadFailure(reason));
+        qCritical("Could not find Core plugin");
         return 1;
     }
     if (!coreplugin->isEffectivelyEnabled()) {
-        const QString reason = QCoreApplication::translate("Application", "Core plugin is disabled.");
-        displayError(msgCoreLoadFailure(reason));
+        qCritical("Core plugin is disabled.");
         return 1;
     }
     if (coreplugin->hasError()) {
-        displayError(msgCoreLoadFailure(coreplugin->errorString()));
+        qCritical("Core plugin is error: %s", qPrintable(coreplugin->errorString()));
         return 1;
     }
 
     PluginManager::loadPlugins();
     if (coreplugin->hasError()) {
-        displayError(msgCoreLoadFailure(coreplugin->errorString()));
+        qCritical("Core plugin is error: %s", qPrintable(coreplugin->errorString()));
         return 1;
     }
 

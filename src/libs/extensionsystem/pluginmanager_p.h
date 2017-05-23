@@ -121,10 +121,6 @@ private:
             QList<PluginSpec *> &circularityCheckQueue);
     void stopAll();
     void deleteAll();
-
-#ifdef WITH_TESTS
-    void startTests();
-#endif
 };
 
 } // namespace Internal

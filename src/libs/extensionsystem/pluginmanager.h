@@ -106,10 +106,6 @@ public:
 
     // command line arguments
     static QStringList arguments();
-    static bool parseOptions(const QStringList &args,
-        const QMap<QString, bool> &appOptions,
-        QMap<QString, QString> *foundAppOptions,
-        QString *errorString);
     static void formatOptions(QTextStream &str, int optionIndentation, int descriptionIndentation);
     static void formatPluginOptions(QTextStream &str, int optionIndentation, int descriptionIndentation);
     static void formatPluginVersions(QTextStream &str);
@@ -126,8 +122,6 @@ public:
 
     void remoteArguments(const QString &serializedArguments, QObject *socket);
     void shutdown();
-
-    QString systemInformation() const;
 
 signals:
     void objectAdded(QObject *obj);
