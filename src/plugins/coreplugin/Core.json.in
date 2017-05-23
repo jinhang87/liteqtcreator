@@ -1,7 +1,7 @@
 {
     \"Name\" : \"Core\",
     \"Version\" : \"$$PROJ_VERSION\",
-    \"CompatVersion\" : \"$$QTCREATOR_COMPAT_VERSION\",
+    \"CompatVersion\" : \"$$PROJ_COMPAT_VERSION\",
     \"Required\" : true,
     \"Vendor\" : \"HIK\",
     \"Copyright\" : \"HIK\",

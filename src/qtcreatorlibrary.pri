@@ -14,7 +14,7 @@ DESTDIR = $$IDE_LIBRARY_PATH
 
 osx {
     QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/Frameworks/
-    QMAKE_LFLAGS += -compatibility_version $$QTCREATOR_COMPAT_VERSION
+    QMAKE_LFLAGS += -compatibility_version $$PROJ_COMPAT_VERSION
 }
 include(rpath.pri)
 

@@ -1,5 +1,5 @@
 # This pri file is used to deploy files that are not compiled while building
-# Qt Creator. It handles copying of files into the build directory if using
+# It handles copying of files into the build directory if using
 # a shadow build and adds the respective install target as well.
 #
 # Usage: Define variables (details below) and include this pri file afterwards.
