@@ -127,7 +127,11 @@ static void printHelp(const QString &a0)
 
 static inline QString msgCoreLoadFailure(const QString &why)
 {
+    #if 0
     return QCoreApplication::translate("Application", "Failed to load core: %1").arg(why);
+    #else 
+    qCritical("%s", qPrintable(why));
+    #endif
 }
 
 static inline int askMsgSendFailed()
@@ -172,40 +176,39 @@ static bool copyRecursively(const QString &srcFilePath,
 static inline QStringList getPluginPaths()
 {
     QStringList rc;
-#if 0
+
     // Figure out root:  Up one from 'bin'
     QDir rootDir = QApplication::applicationDirPath();
     rootDir.cdUp();
     const QString rootDirPath = rootDir.canonicalPath();
     QString pluginPath;
-    if (Utils::HostOsInfo::isMacHost()) {
-        // 1) "PlugIns" (OS X)
-        pluginPath = rootDirPath + QLatin1String("/PlugIns");
-        rc.push_back(pluginPath);
-    } else {
-        // 2) "plugins" (Win/Linux)
-        pluginPath = rootDirPath;
-        pluginPath += QLatin1Char('/');
-        pluginPath += QLatin1String(IDE_LIBRARY_BASENAME);
-        pluginPath += QLatin1String("/qtcreator/plugins");
-        rc.push_back(pluginPath);
-    }
+
+    // 2) "plugins" (Win/Linux)
+    pluginPath = rootDirPath;
+    pluginPath += QLatin1Char('/');
+    pluginPath += QLatin1String(IDE_LIBRARY_BASENAME);
+    pluginPath += QLatin1String("/qtcreator/plugins");
+    rc.push_back(pluginPath);
+
     // 3) <localappdata>/plugins/<ideversion>
     //    where <localappdata> is e.g.
     //    "%LOCALAPPDATA%\QtProject\qtcreator" on Windows Vista and later
     //    "$XDG_DATA_HOME/data/QtProject/qtcreator" or "~/.local/share/data/QtProject/qtcreator" on Linux
     //    "~/Library/Application Support/QtProject/Qt Creator" on Mac
     pluginPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-    if (Utils::HostOsInfo::isAnyUnixHost() && !Utils::HostOsInfo::isMacHost())
-        pluginPath += QLatin1String("/data");
-    pluginPath += QLatin1Char('/')
-            + QLatin1String(Core::Constants::IDE_SETTINGSVARIANT_STR)
-            + QLatin1Char('/');
-    pluginPath += QLatin1String(Utils::HostOsInfo::isMacHost() ? "Qt Creator" : "qtcreator");
-    pluginPath += QLatin1String("/plugins/");
-    pluginPath += QLatin1String(Core::Constants::IDE_VERSION_LONG);
-    rc.push_back(pluginPath);
+#ifdef Q_OS_UNIX
+    pluginPath += QLatin1String("/data");
 #endif
+    pluginPath += QLatin1Char('/')
+            //+ QLatin1String(Core::Constants::IDE_SETTINGSVARIANT_STR)
+            + QLatin1String("QtProject")
+            + QLatin1Char('/');
+    pluginPath += QLatin1String("qtcreator");
+    pluginPath += QLatin1String("/plugins/");
+    //pluginPath += QLatin1String(Core::Constants::IDE_VERSION_LONG);
+    pluginPath += QLatin1String("V4.2.1");
+    rc.push_back(pluginPath);
+
     return rc;
 }
 
