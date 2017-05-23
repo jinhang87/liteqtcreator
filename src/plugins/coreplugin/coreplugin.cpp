@@ -27,6 +27,7 @@
 
 #include <extensionsystem/pluginmanager.h>
 #include <utils/algorithm.h>
+#include "mainmenu.h"
 
 #include <QtPlugin>
 #include <QDebug>
@@ -57,6 +58,7 @@ struct CoreArguments {
 CoreArguments parseArguments(const QStringList &arguments)
 {
     CoreArguments args;
+    Q_UNUSED(arguments);
 #if 0
     for (int i = 0; i < arguments.size(); ++i) {
         if (arguments.at(i) == QLatin1String("-color")) {
@@ -77,6 +79,10 @@ CoreArguments parseArguments(const QStringList &arguments)
 
 bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage)
 {
+    Q_UNUSED(arguments);
+    Q_UNUSED(errorMessage);
+    m_mainmenu = new mainmenu;
+    m_mainmenu->show();
     #if 0
     if (ThemeEntry::availableThemes().isEmpty()) {
         *errorMessage = tr("No themes found in installation.");
@@ -220,5 +226,6 @@ ExtensionSystem::IPlugin::ShutdownFlag CorePlugin::aboutToShutdown()
 {
     //Find::aboutToShutdown();
     //m_mainWindow->aboutToShutdown();
+    delete m_mainmenu;
     return SynchronousShutdown;
 }

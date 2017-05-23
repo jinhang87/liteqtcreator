@@ -30,6 +30,7 @@
 QT_BEGIN_NAMESPACE
 class QMenu;
 QT_END_NAMESPACE
+class mainmenu;
 
 namespace Utils {
 //class PathChooser;
@@ -43,7 +44,6 @@ namespace Core {
 namespace Internal {
 
 //class EditMode;
-//class MainWindow;
 //class Locator;
 
 class CorePlugin : public ExtensionSystem::IPlugin
@@ -80,7 +80,7 @@ private slots:
 private:
     //static void addToPathChooserContextMenu(Utils::PathChooser *pathChooser, QMenu *menu);
 
-    //MainWindow *m_mainWindow;
+    mainmenu *m_mainmenu;
     //EditMode *m_editMode;
     //DesignMode *m_designMode;
     //Locator *m_locator;

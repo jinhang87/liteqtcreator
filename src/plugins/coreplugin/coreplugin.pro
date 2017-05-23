@@ -12,10 +12,15 @@ isEmpty(QTC_SHOW_BUILD_DATE): QTC_SHOW_BUILD_DATE = $$(QTC_SHOW_BUILD_DATE)
 
 include(../../qtcreatorplugin.pri)
 SOURCES += \
-    coreplugin.cpp
+    coreplugin.cpp \
+    mainmenu.cpp
 
 HEADERS += \
     core_global.h \
-    coreplugin.h
+    coreplugin.h \
+    mainmenu.h
+
+FORMS += \
+    mainmenu.ui
 
 
