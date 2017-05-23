@@ -31,16 +31,16 @@ namespace Constants {
 #define STRINGIFY_INTERNAL(x) #x
 #define STRINGIFY(x) STRINGIFY_INTERNAL(x)
 
-#define IDE_VERSION $${QTCREATOR_VERSION}
+#define IDE_VERSION $${PROJ_VERSION}
 #define IDE_VERSION_STR STRINGIFY(IDE_VERSION)
 
-#define IDE_VERSION_MAJOR $$replace(QTCREATOR_VERSION, "^(\\d+)\\.\\d+\\.\\d+(-.*)?$", \\1)
-#define IDE_VERSION_MINOR $$replace(QTCREATOR_VERSION, "^\\d+\\.(\\d+)\\.\\d+(-.*)?$", \\1)
-#define IDE_VERSION_RELEASE $$replace(QTCREATOR_VERSION, "^\\d+\\.\\d+\\.(\\d+)(-.*)?$", \\1)
+#define IDE_VERSION_MAJOR $$replace(PROJ_VERSION, "^(\\d+)\\.\\d+\\.\\d+(-.*)?$", \\1)
+#define IDE_VERSION_MINOR $$replace(PROJ_VERSION, "^\\d+\\.(\\d+)\\.\\d+(-.*)?$", \\1)
+#define IDE_VERSION_RELEASE $$replace(PROJ_VERSION, "^\\d+\\.\\d+\\.(\\d+)(-.*)?$", \\1)
 
 const char * const IDE_VERSION_LONG      = IDE_VERSION_STR;
-const char * const IDE_AUTHOR            = \"The Qt Company Ltd\";
-const char * const IDE_YEAR              = \"2016\";
+const char * const IDE_AUTHOR            = \"HIK\";
+const char * const IDE_YEAR              = \"2017\";
 
 #ifdef IDE_VERSION_DESCRIPTION
 const char * const IDE_VERSION_DESCRIPTION_STR = STRINGIFY(IDE_VERSION_DESCRIPTION);
@@ -58,13 +58,13 @@ const char * const IDE_REVISION_STR      = \"\";
 #ifdef IDE_SETTINGSVARIANT
 const char * const IDE_SETTINGSVARIANT_STR      = STRINGIFY(IDE_SETTINGSVARIANT);
 #else
-const char * const IDE_SETTINGSVARIANT_STR      = \"QtProject\";
+const char * const IDE_SETTINGSVARIANT_STR      = \"Project\";
 #endif
 
 #ifdef IDE_COPY_SETTINGS_FROM_VARIANT
 const char * const IDE_COPY_SETTINGS_FROM_VARIANT_STR = STRINGIFY(IDE_COPY_SETTINGS_FROM_VARIANT);
 #else
-const char * const IDE_COPY_SETTINGS_FROM_VARIANT_STR = \"Nokia\";
+const char * const IDE_COPY_SETTINGS_FROM_VARIANT_STR = \"HIK\";
 #endif
 
 

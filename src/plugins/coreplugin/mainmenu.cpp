@@ -13,9 +13,9 @@ mainmenu::mainmenu(QWidget *parent) :
     ui->setupUi(this);
 
     int i = 0;
-    for(i = 0; i< 67 ; i++)
+    for(i = 0; i< 12 ; i++)
     {
-        QSize iconsize(64,64);
+        QSize iconsize(256,256);
         QPixmap pix(iconsize);
         QPainter painter(&pix);
         QLinearGradient gradient(0,0, 0, iconsize.height());
