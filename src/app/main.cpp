@@ -22,7 +22,7 @@
 ** be met: https://www.gnu.org/licenses/gpl-3.0.html.
 **
 ****************************************************************************/
-
+#include <app/app_version.h>
 #include <extensionsystem/iplugin.h>
 #include <extensionsystem/pluginmanager.h>
 #include <extensionsystem/pluginspec.h>
@@ -200,13 +200,13 @@ static inline QStringList getPluginPaths()
     pluginPath += QLatin1String("/data");
 #endif
     pluginPath += QLatin1Char('/')
-            //+ QLatin1String(Core::Constants::IDE_SETTINGSVARIANT_STR)
-            + QLatin1String("QtProject")
+            + QLatin1String(Core::Constants::IDE_SETTINGSVARIANT_STR)
+            //+ QLatin1String("QtProject")
             + QLatin1Char('/');
     pluginPath += QLatin1String("qtcreator");
     pluginPath += QLatin1String("/plugins/");
-    //pluginPath += QLatin1String(Core::Constants::IDE_VERSION_LONG);
-    pluginPath += QLatin1String("V4.2.1");
+    pluginPath += QLatin1String(Core::Constants::IDE_VERSION_LONG);
+    //pluginPath += QLatin1String("V4.2.1");
     rc.push_back(pluginPath);
 
     return rc;
@@ -229,6 +229,7 @@ int main(int argc, char **argv)
     // Load
     const QStringList pluginPaths = getPluginPaths();
     PluginManager::setPluginPaths(pluginPaths);
+    qDebug() << "pluginPaths" << pluginPaths;
 
     const PluginSpecSet plugins = PluginManager::plugins();
     PluginSpec *coreplugin = 0;

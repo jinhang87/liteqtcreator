@@ -17,4 +17,9 @@ LIBS *= -l$$qtLibraryName(ExtensionSystem) -l$$qtLibraryName(Aggregation) -l$$qt
 target.path = $$INSTALL_APP_PATH
 INSTALLS += target
 
+DISTFILES += \
+    $$PWD/app_version.h.in
+
+QMAKE_SUBSTITUTES += $$PWD/app_version.h.in
+
 CONFIG += no_batch
