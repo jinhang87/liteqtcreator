@@ -1,5 +1,5 @@
 include(../../qtcreator.pri)
-include(../shared/qtsingleapplication/qtsingleapplication.pri)
+#include(../shared/qtsingleapplication/qtsingleapplication.pri)
 
 TEMPLATE = app
 CONFIG += qtc_runnable sliced_bundle

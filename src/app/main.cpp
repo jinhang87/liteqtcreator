@@ -3,7 +3,7 @@
 #include <extensionsystem/iplugin.h>
 #include <extensionsystem/pluginmanager.h>
 #include <extensionsystem/pluginspec.h>
-#include <qtsingleapplication.h>
+//#include <qtsingleapplication.h>
 
 #include <QDebug>
 #include <QDir>
@@ -19,8 +19,6 @@
 #include <QTranslator>
 #include <QUrl>
 #include <QVariant>
-
-#include <QNetworkProxyFactory>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -114,8 +112,7 @@ int main(int argc, char **argv)
 {
     QLoggingCategory::setFilterRules(QLatin1String("qtc.*.debug=false\nqtc.*.info=false"));
 
-    SharedTools::QtSingleApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-    SharedTools::QtSingleApplication app((QLatin1String(appNameC)), argc, argv);
+    QApplication app(argc, argv);
 
     const int threadCount = QThreadPool::globalInstance()->maxThreadCount();
     QThreadPool::globalInstance()->setMaxThreadCount(qMax(4, 2 * threadCount));
@@ -155,13 +152,6 @@ int main(int argc, char **argv)
         qCritical("Core plugin is error: %s", qPrintable(coreplugin->errorString()));
         return 1;
     }
-
-    // Set up remote arguments.
-    QObject::connect(&app, &SharedTools::QtSingleApplication::messageReceived,
-                     &pluginManager, &PluginManager::remoteArguments);
-
-    QObject::connect(&app, SIGNAL(fileOpenRequest(QString)), coreplugin->plugin(),
-                     SLOT(fileOpenRequest(QString)));
 
     // shutdown plugin manager on the exit
     QObject::connect(&app, &QCoreApplication::aboutToQuit, &pluginManager, &PluginManager::shutdown);
