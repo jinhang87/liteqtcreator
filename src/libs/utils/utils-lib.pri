@@ -4,8 +4,6 @@ dll {
     DEFINES += QTCREATOR_UTILS_STATIC_LIB
 }
 
-#QT += gui network qml
-
 #CONFIG += exceptions # used by portlist.cpp, textfileformat.cpp, and ssh/*
 
 #win32: LIBS += -luser32 -lshell32

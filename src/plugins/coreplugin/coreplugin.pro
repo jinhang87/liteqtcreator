@@ -1,10 +1,4 @@
 DEFINES += CORE_LIBRARY
-QT += \
-    help \
-    network \
-    printsupport \
-    qml \
-    sql
 
 # embedding build time information prevents repeatedly binary exact versions from same source code
 isEmpty(QTC_SHOW_BUILD_DATE): QTC_SHOW_BUILD_DATE = $$(QTC_SHOW_BUILD_DATE)

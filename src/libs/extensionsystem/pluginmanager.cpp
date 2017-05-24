@@ -395,11 +395,6 @@ void PluginManager::shutdown()
     d->shutdown();
 }
 
-static QString filled(const QString &s, int min)
-{
-    return s + QString(qMax(0, min - s.size()), ' ');
-}
-
 /*!
     The list of paths were the plugin manager searches for plugins.
 
