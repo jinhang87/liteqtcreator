@@ -69,36 +69,7 @@ isEmpty(IDE_BUILD_TREE) {
 }
 
 IDE_APP_PATH = $$IDE_BUILD_TREE/bin
-osx {
-    IDE_APP_TARGET   = "Qt Creator"
-
-    # check if IDE_BUILD_TREE is actually an existing Qt Creator.app,
-    # for building against a binary package
-    exists($$IDE_BUILD_TREE/Contents/MacOS/Qt Creator): IDE_APP_BUNDLE = $$IDE_BUILD_TREE
-    else: IDE_APP_BUNDLE = $$IDE_APP_PATH/$${IDE_APP_TARGET}.app
-
-    # set output path if not set manually
-    isEmpty(IDE_OUTPUT_PATH): IDE_OUTPUT_PATH = $$IDE_APP_BUNDLE/Contents
-
-    IDE_LIBRARY_PATH = $$IDE_OUTPUT_PATH/Frameworks
-    IDE_PLUGIN_PATH  = $$IDE_OUTPUT_PATH/PlugIns
-    IDE_LIBEXEC_PATH = $$IDE_OUTPUT_PATH/Resources
-    IDE_DATA_PATH    = $$IDE_OUTPUT_PATH/Resources
-    IDE_DOC_PATH     = $$IDE_DATA_PATH/doc
-    IDE_BIN_PATH     = $$IDE_OUTPUT_PATH/MacOS
-    copydata = 1
-
-    LINK_LIBRARY_PATH = $$IDE_APP_BUNDLE/Contents/Frameworks
-    LINK_PLUGIN_PATH  = $$IDE_APP_BUNDLE/Contents/PlugIns
-
-    INSTALL_LIBRARY_PATH = $$QTC_PREFIX/$${IDE_APP_TARGET}.app/Contents/Frameworks
-    INSTALL_PLUGIN_PATH  = $$QTC_PREFIX/$${IDE_APP_TARGET}.app/Contents/PlugIns
-    INSTALL_LIBEXEC_PATH = $$QTC_PREFIX/$${IDE_APP_TARGET}.app/Contents/Resources
-    INSTALL_DATA_PATH    = $$QTC_PREFIX/$${IDE_APP_TARGET}.app/Contents/Resources
-    INSTALL_DOC_PATH     = $$INSTALL_DATA_PATH/doc
-    INSTALL_BIN_PATH     = $$QTC_PREFIX/$${IDE_APP_TARGET}.app/Contents/MacOS
-    INSTALL_APP_PATH     = $$QTC_PREFIX/
-} else {
+!osx {
     contains(TEMPLATE, vc.*):vcproj = 1
     IDE_APP_TARGET   = qtcreator
 
@@ -164,7 +135,6 @@ exists($$IDE_LIBRARY_PATH): LIBS *= -L$$IDE_LIBRARY_PATH  # library path from ou
 }
 
 DEFINES += \
-    QT_CREATOR \
     QT_NO_CAST_TO_ASCII \
     QT_RESTRICTED_CAST_FROM_ASCII \
     QT_DISABLE_DEPRECATED_BEFORE=0x050600
