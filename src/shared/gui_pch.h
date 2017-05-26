@@ -5,7 +5,7 @@
  * GCC >= 3.4 / VC to greatly speed the building of Qt Creator.
  */
 
-#include "qtcreator_pch.h"
+#include "lib_pch.h"
 
 #if defined __cplusplus
 

@@ -11,6 +11,8 @@ namespace Constants {
 #define IDE_VERSION $${PROJ_VERSION}
 #define IDE_VERSION_STR STRINGIFY(IDE_VERSION)
 
+const char * const IDE_TARGET = \"$${IDE_APP_TARGET}\";
+
 #define IDE_VERSION_MAJOR $$replace(PROJ_VERSION, "^(\\d+)\\.\\d+\\.\\d+(-.*)?$", \\1)
 #define IDE_VERSION_MINOR $$replace(PROJ_VERSION, "^\\d+\\.(\\d+)\\.\\d+(-.*)?$", \\1)
 #define IDE_VERSION_RELEASE $$replace(PROJ_VERSION, "^\\d+\\.\\d+\\.(\\d+)(-.*)?$", \\1)

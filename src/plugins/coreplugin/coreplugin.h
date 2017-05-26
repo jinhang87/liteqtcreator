@@ -25,7 +25,7 @@ class mainmenu;
 class CorePlugin : public ExtensionSystem::IPlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QtCreatorPlugin" FILE "Core.json")
+    Q_PLUGIN_METADATA(IID "org.hik.mt.mvr.plugin" FILE "Core.json")
 
 public:
     CorePlugin();

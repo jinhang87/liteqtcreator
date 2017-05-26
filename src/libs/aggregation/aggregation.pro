@@ -1,4 +1,4 @@
-include(../../qtcreatorlibrary.pri)
+include(../../library.pri)
 
 DEFINES += AGGREGATION_LIBRARY
 

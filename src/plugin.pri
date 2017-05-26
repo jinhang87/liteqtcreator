@@ -45,20 +45,20 @@ dependencyList = $$join(dependencyList, ",$$escape_expand(\\n)")
 dependencyList = "\"Dependencies\" : [$$escape_expand(\\n)$$dependencyList$$escape_expand(\\n)    ]"
 
 # use gui precompiled header for plugins by default
-isEmpty(PRECOMPILED_HEADER):PRECOMPILED_HEADER = $$PWD/shared/qtcreator_gui_pch.h
+isEmpty(PRECOMPILED_HEADER):PRECOMPILED_HEADER = $$PWD/shared/gui_pch.h
 
 isEmpty(USE_USER_DESTDIR) {
     DESTDIR = $$IDE_PLUGIN_PATH
 } else {
     win32 {
-        DESTDIRAPPNAME = "qtcreator"
+        DESTDIRAPPNAME = $$IDE_APP_TARGET
         DESTDIRBASE = "$$(LOCALAPPDATA)"
         isEmpty(DESTDIRBASE):DESTDIRBASE="$$(USERPROFILE)\Local Settings\Application Data"
     } else:macx {
         DESTDIRAPPNAME = "Qt Creator"
         DESTDIRBASE = "$$(HOME)/Library/Application Support"
     } else:unix {
-        DESTDIRAPPNAME = "qtcreator"
+        DESTDIRAPPNAME = $$IDE_APP_TARGET
         DESTDIRBASE = "$$(XDG_DATA_HOME)"
         isEmpty(DESTDIRBASE):DESTDIRBASE = "$$(HOME)/.local/share/data"
         else:DESTDIRBASE = "$$DESTDIRBASE/data"
@@ -70,7 +70,7 @@ INCLUDEPATH += $$OUT_PWD
 
 # copy the plugin spec
 isEmpty(TARGET) {
-    error("qtcreatorplugin.pri: You must provide a TARGET")
+    error("plugin.pri: You must provide a TARGET")
 }
 
 PLUGINJSON = $$_PRO_FILE_PWD_/$${TARGET}.json

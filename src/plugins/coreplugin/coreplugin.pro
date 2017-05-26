@@ -4,7 +4,7 @@ DEFINES += CORE_LIBRARY
 isEmpty(QTC_SHOW_BUILD_DATE): QTC_SHOW_BUILD_DATE = $$(QTC_SHOW_BUILD_DATE)
 !isEmpty(QTC_SHOW_BUILD_DATE): DEFINES += QTC_SHOW_BUILD_DATE
 
-include(../../qtcreatorplugin.pri)
+include(../../plugin.pri)
 SOURCES += \
     coreplugin.cpp \
     mainmenu.cpp

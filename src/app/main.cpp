@@ -82,13 +82,15 @@ static inline QStringList getPluginPaths()
     pluginPath = rootDirPath;
     pluginPath += QLatin1Char('/');
     pluginPath += QLatin1String(IDE_LIBRARY_BASENAME);
-    pluginPath += QLatin1String("/qtcreator/plugins");
+    pluginPath += QLatin1Char('/');
+    pluginPath += QLatin1String(Core::Constants::IDE_TARGET);
+    pluginPath += QLatin1String("/plugins");
     rc.push_back(pluginPath);
 
     // 3) <localappdata>/plugins/<ideversion>
     //    where <localappdata> is e.g.
-    //    "%LOCALAPPDATA%\QtProject\qtcreator" on Windows Vista and later
-    //    "$XDG_DATA_HOME/data/QtProject/qtcreator" or "~/.local/share/data/QtProject/qtcreator" on Linux
+    //    "%LOCALAPPDATA%\QtProject\IDE_TARGET" on Windows Vista and later
+    //    "$XDG_DATA_HOME/data/QtProject/IDE_TARGET" or "~/.local/share/data/QtProject/IDE_TARGET" on Linux
     //    "~/Library/Application Support/QtProject/Qt Creator" on Mac
     pluginPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
 #ifdef Q_OS_UNIX
@@ -98,7 +100,7 @@ static inline QStringList getPluginPaths()
             + QLatin1String(Core::Constants::IDE_SETTINGSVARIANT_STR)
             //+ QLatin1String("QtProject")
             + QLatin1Char('/');
-    pluginPath += QLatin1String("qtcreator");
+    pluginPath += QLatin1String(Core::Constants::IDE_TARGET);
     pluginPath += QLatin1String("/plugins/");
     pluginPath += QLatin1String(Core::Constants::IDE_VERSION_LONG);
     //pluginPath += QLatin1String("V4.2.1");
@@ -118,7 +120,7 @@ int main(int argc, char **argv)
     QThreadPool::globalInstance()->setMaxThreadCount(qMax(4, 2 * threadCount));
 
     PluginManager pluginManager;
-    PluginManager::setPluginIID(QLatin1String("org.qt-project.Qt.QtCreatorPlugin"));
+    PluginManager::setPluginIID(QLatin1String("org.hik.mt.mvr.plugin"));
 
     // Load
     const QStringList pluginPaths = getPluginPaths();
