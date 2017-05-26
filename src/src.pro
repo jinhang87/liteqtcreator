@@ -1,4 +1,4 @@
-include(../qtcreator.pri)
+include(../creator.pri)
 
 TEMPLATE  = subdirs
 CONFIG   += ordered

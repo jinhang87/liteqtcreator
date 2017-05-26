@@ -1,7 +1,7 @@
 include($$replace(_PRO_FILE_PWD_, ([^/]+$), \\1/\\1_dependencies.pri))
 TARGET = $$QTC_LIB_NAME
 
-include(../qtcreator.pri)
+include(../creator.pri)
 
 # use precompiled header for libraries by default
 isEmpty(PRECOMPILED_HEADER):PRECOMPILED_HEADER = $$PWD/shared/lib_pch.h

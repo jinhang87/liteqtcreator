@@ -1,4 +1,4 @@
-include(../../qtcreator.pri)
+include(../../creator.pri)
 #include(../shared/qtsingleapplication/qtsingleapplication.pri)
 
 TEMPLATE = app

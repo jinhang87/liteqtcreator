@@ -13,7 +13,7 @@ plugin_deps = $$QTC_PLUGIN_DEPENDS
 plugin_test_deps = $$QTC_TEST_DEPENDS
 plugin_recmds = $$QTC_PLUGIN_RECOMMENDS
 
-include(../qtcreator.pri)
+include(../creator.pri)
 
 defineReplace(dependencyName) {
     dependencies_file =
