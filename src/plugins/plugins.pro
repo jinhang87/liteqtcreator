@@ -3,7 +3,8 @@ include(../../creator.pri)
 TEMPLATE  = subdirs
 
 SUBDIRS   = \
-    coreplugin
+    coreplugin \
+    subplugin
 
 for(p, SUBDIRS) {
     QTC_PLUGIN_DEPENDS =
