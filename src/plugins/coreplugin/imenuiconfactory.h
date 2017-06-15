@@ -1,6 +1,7 @@
 #ifndef IMENUICONFACTORY_H
 #define IMENUICONFACTORY_H
 
+#include "core_global.h"
 #include <QObject>
 
 class QPushButton;
@@ -15,7 +16,7 @@ struct MenuIconView
     QLabel *m_label;
 };
 
-class IMenuIconFactory : public QObject
+class CORE_EXPORT IMenuIconFactory : public QObject
 {
     Q_OBJECT
 public:
