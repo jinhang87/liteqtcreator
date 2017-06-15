@@ -10,5 +10,5 @@ TEMPLATE  = subdirs
 CONFIG   += ordered
 
 SUBDIRS = src
-
+TRANSLATIONS += $${IDE_APP_TARGET}_zh_CN.ts
 

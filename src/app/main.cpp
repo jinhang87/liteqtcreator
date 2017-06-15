@@ -110,8 +110,16 @@ static inline QStringList getPluginPaths()
     return rc;
 }
 
-static bool i18nInit(QApplication &app)
+int main(int argc, char **argv)
 {
+    QLoggingCategory::setFilterRules(QLatin1String("qtc.*.debug=false\nqtc.*.info=false"));
+
+    QApplication app(argc, argv);
+
+    const int threadCount = QThreadPool::globalInstance()->maxThreadCount();
+    QThreadPool::globalInstance()->setMaxThreadCount(qMax(4, 2 * threadCount));
+
+    // Internationalization
     QTranslator translator;
     QTranslator qtTranslator;
     QStringList uiLanguages;
@@ -137,7 +145,7 @@ static bool i18nInit(QApplication &app)
                 app.setProperty("qtc_locale", locale);
                 break;
             }
-            translator.load(QString()); // unload()
+            //translator.load(QString()); // unload()
         } else if (locale == QLatin1String("C") /* overrideLanguage == "English" */) {
             // use built-in
             break;
@@ -146,20 +154,6 @@ static bool i18nInit(QApplication &app)
             break;
         }
     }
-    return true;
-}
-
-int main(int argc, char **argv)
-{
-    QLoggingCategory::setFilterRules(QLatin1String("qtc.*.debug=false\nqtc.*.info=false"));
-
-    QApplication app(argc, argv);
-
-    const int threadCount = QThreadPool::globalInstance()->maxThreadCount();
-    QThreadPool::globalInstance()->setMaxThreadCount(qMax(4, 2 * threadCount));
-
-    // Internationalization
-    i18nInit(app);
 
     PluginManager pluginManager;
     PluginManager::setPluginIID(QLatin1String("org.hik.mt.mvr.plugin"));

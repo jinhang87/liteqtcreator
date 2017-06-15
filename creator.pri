@@ -209,4 +209,3 @@ for(ever) {
     QTC_LIB_DEPENDS -= $$unique(done_libs)
 }
 
-TRANSLATIONS += $${IDE_APP_TARGET}_zh_CN.ts
