@@ -16,11 +16,6 @@ mainmenu::mainmenu(QWidget *parent) :
     ui(new Ui::mainmenu)
 {
     ui->setupUi(this);
-
-
-
-
-
 }
 
 mainmenu::~mainmenu()
@@ -32,7 +27,7 @@ void mainmenu::extensionsInitialized()
 {
     m_listIMenuIcons = PluginManager::getObjects<IMenuIconFactory>();
     for (auto* factory : m_listIMenuIcons) {
-        factory->create();
+        auto view = factory->create();
     }
 }
 
