@@ -31,6 +31,7 @@ enum { OptionIndent = 4, DescriptionIndent = 34 };
 
 const char appNameC[] = "MVR UI";
 const char corePluginNameC[] = "Core";
+static const char *SHARE_PATH = "/../share/qtcreator";
 
 typedef QList<PluginSpec *> PluginSpecSet;
 
@@ -109,6 +110,44 @@ static inline QStringList getPluginPaths()
     return rc;
 }
 
+static bool i18nInit(QApplication &app)
+{
+    QTranslator translator;
+    QTranslator qtTranslator;
+    QStringList uiLanguages;
+    uiLanguages = QLocale::system().uiLanguages();
+    qDebug() << uiLanguages;
+
+    const QString &creatorTrPath = QCoreApplication::applicationDirPath()
+            + QLatin1String(SHARE_PATH) + QLatin1String("/translations");
+    qDebug() << creatorTrPath;
+    foreach (QString locale, uiLanguages) {
+        locale = QLocale(locale).name();
+        qDebug() << locale;
+        if (translator.load(QLatin1String(Core::Constants::IDE_TARGET) + QLatin1String("_") + locale, creatorTrPath)) {
+            const QString &qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+            const QString &qtTrFile = QLatin1String("qt_") + locale;
+            qDebug() << qtTrPath;
+            qDebug() << qtTrFile;
+            // Binary installer puts Qt tr files into creatorTrPath
+            if (qtTranslator.load(qtTrFile, qtTrPath) || qtTranslator.load(qtTrFile, creatorTrPath)) {
+                qDebug() << "installTranslator";
+                app.installTranslator(&translator);
+                app.installTranslator(&qtTranslator);
+                app.setProperty("qtc_locale", locale);
+                break;
+            }
+            translator.load(QString()); // unload()
+        } else if (locale == QLatin1String("C") /* overrideLanguage == "English" */) {
+            // use built-in
+            break;
+        } else if (locale.startsWith(QLatin1String("en")) /* "English" is built-in */) {
+            // use built-in
+            break;
+        }
+    }
+    return true;
+}
 
 int main(int argc, char **argv)
 {
@@ -119,13 +158,18 @@ int main(int argc, char **argv)
     const int threadCount = QThreadPool::globalInstance()->maxThreadCount();
     QThreadPool::globalInstance()->setMaxThreadCount(qMax(4, 2 * threadCount));
 
+    // Internationalization
+    i18nInit(app);
+
     PluginManager pluginManager;
     PluginManager::setPluginIID(QLatin1String("org.hik.mt.mvr.plugin"));
 
     // Load
     const QStringList pluginPaths = getPluginPaths();
     PluginManager::setPluginPaths(pluginPaths);
-    qDebug() << "pluginPaths" << pluginPaths;
+
+
+    qDebug() << QObject::tr("pluginPaths") << pluginPaths;
 
     const PluginSpecSet plugins = PluginManager::plugins();
     PluginSpec *coreplugin = 0;
