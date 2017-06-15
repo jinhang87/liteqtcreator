@@ -32,7 +32,11 @@ void mainmenu::extensionsInitialized()
     for (auto* factory : m_listIMenuIcons) {
         auto view = factory->create(this);
         qDebug() << "mainmenu::factory->create";
+        view.m_button->setGeometry(10,10,200,200);
+        view.show();
+
     }
+
 }
 
 } // namespace Internal
