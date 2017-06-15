@@ -5,6 +5,7 @@
 
 #include <QPainter>
 #include <QListWidgetItem>
+#include <QDebug>
 
 using namespace ExtensionSystem;
 
@@ -15,6 +16,7 @@ mainmenu::mainmenu(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::mainmenu)
 {
+    qDebug() << "mainmenu::mainmenu";
     ui->setupUi(this);
 }
 
@@ -25,9 +27,11 @@ mainmenu::~mainmenu()
 
 void mainmenu::extensionsInitialized()
 {
+    qDebug() << "mainmenu::extensionsInitialized";
     m_listIMenuIcons = PluginManager::getObjects<IMenuIconFactory>();
     for (auto* factory : m_listIMenuIcons) {
-        auto view = factory->create();
+        auto view = factory->create(this);
+        qDebug() << "mainmenu::factory->create";
     }
 }
 

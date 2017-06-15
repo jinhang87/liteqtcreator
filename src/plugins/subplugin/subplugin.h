@@ -13,14 +13,6 @@ namespace Utils {
 //class Theme;
 }
 
-namespace Core {
-
-//class DesignMode;
-
-namespace Internal {
-class mainmenu;
-//class EditMode;
-//class Locator;
 
 class SubPlugin : public ExtensionSystem::IPlugin
 {
@@ -37,15 +29,8 @@ public:
     ShutdownFlag aboutToShutdown();
 
 public slots:
-    void fileOpenRequest(const QString&);
-
-
 
 private:
-    //static void addToPathChooserContextMenu(Utils::PathChooser *pathChooser, QMenu *menu);
-    //mainmenu *m_mainmenu;
 
 };
 
-} // namespace Internal
-} // namespace Core

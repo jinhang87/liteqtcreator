@@ -21,7 +21,7 @@ class CORE_EXPORT IMenuIconFactory : public QObject
     Q_OBJECT
 public:
     explicit IMenuIconFactory();
-    virtual MenuIconView create() = 0;
+    virtual MenuIconView create(QWidget *parent = 0) = 0;
 
 signals:
 

@@ -65,7 +65,7 @@ bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage)
 
 void CorePlugin::extensionsInitialized()
 {
-
+    m_mainmenu->extensionsInitialized();
 }
 
 bool CorePlugin::delayedInitialize()

@@ -10,10 +10,10 @@ ioMenuIconFactory::ioMenuIconFactory()
 
 }
 
-MenuIconView ioMenuIconFactory::create()
+MenuIconView ioMenuIconFactory::create(QWidget *parent)
 {
-    auto *p = new QPushButton;
-    auto *l = new QLabel;
+    auto *p = new QPushButton(parent);
+    auto *l = new QLabel(parent);
     MenuIconView n(p, l);
     return n;
 }
