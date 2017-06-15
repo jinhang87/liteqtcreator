@@ -7,12 +7,14 @@ isEmpty(QTC_SHOW_BUILD_DATE): QTC_SHOW_BUILD_DATE = $$(QTC_SHOW_BUILD_DATE)
 include(../../plugin.pri)
 SOURCES += \
     coreplugin.cpp \
-    mainmenu.cpp
+    mainmenu.cpp \
+    imenuiconfactory.cpp
 
 HEADERS += \
     core_global.h \
     coreplugin.h \
-    mainmenu.h
+    mainmenu.h \
+    imenuiconfactory.h
 
 FORMS += \
     mainmenu.ui

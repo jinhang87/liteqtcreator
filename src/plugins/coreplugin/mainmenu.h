@@ -8,6 +8,8 @@ class mainmenu;
 }
 
 namespace Core {
+class IMenuIconFactory;
+
 namespace Internal {
 
 class mainmenu : public QWidget
@@ -17,9 +19,11 @@ class mainmenu : public QWidget
 public:
     explicit mainmenu(QWidget *parent = 0);
     ~mainmenu();
+    void extensionsInitialized();
 
 private:
     Ui::mainmenu *ui;
+    QList<IMenuIconFactory*> m_listIMenuIcons;
 };
 
 } // namespace Internal

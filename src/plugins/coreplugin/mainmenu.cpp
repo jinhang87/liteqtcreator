@@ -1,7 +1,12 @@
 #include "mainmenu.h"
 #include "ui_mainmenu.h"
+#include "imenuiconfactory.h"
+#include <extensionsystem/pluginmanager.h>
+
 #include <QPainter>
 #include <QListWidgetItem>
+
+using namespace ExtensionSystem;
 
 namespace Core {
 namespace Internal {
@@ -12,28 +17,23 @@ mainmenu::mainmenu(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    int i = 0;
-    for(i = 0; i< 12 ; i++)
-    {
-        QSize iconsize(256,256);
-        QPixmap pix(iconsize);
-        QPainter painter(&pix);
-        QLinearGradient gradient(0,0, 0, iconsize.height());
-        gradient.setColorAt(0.0, QColor(240, 240, 240));
-        gradient.setColorAt(1.0, QColor(224, 224, 224));
-        QBrush brush(gradient);
-        painter.fillRect(QRect(QPoint(0, 0), iconsize), brush);
-        QListWidgetItem *item = new QListWidgetItem;
-        item->setIcon(QIcon(pix));
-        item->setText("2112");
-        ui->listWidget->addItem(item);
-    }
+
+
+
 
 }
 
 mainmenu::~mainmenu()
 {
     delete ui;
+}
+
+void mainmenu::extensionsInitialized()
+{
+    m_listIMenuIcons = PluginManager::getObjects<IMenuIconFactory>();
+    for (auto* factory : m_listIMenuIcons) {
+        factory->create();
+    }
 }
 
 } // namespace Internal
