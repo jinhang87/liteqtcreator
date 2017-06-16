@@ -31,7 +31,7 @@ enum { OptionIndent = 4, DescriptionIndent = 34 };
 
 const char appNameC[] = "MVR UI";
 const char corePluginNameC[] = "Core";
-static const char *SHARE_PATH = "/../share/qtcreator";
+static const char *SHARE_PATH = "/../share/creator";
 
 typedef QList<PluginSpec *> PluginSpecSet;
 
@@ -58,7 +58,7 @@ static void printVersion(const PluginSpec *coreplugin)
 {
     QString version;
     QTextStream str(&version);
-    str << '\n' << appNameC << ' ' << coreplugin->version()<< " based on Qt " << qVersion() << "\n\n";
+    str << '\n' << appNameC << ' ' << coreplugin->version()<< QObject::tr(" based on Qt ") << qVersion() << "\n\n";
     PluginManager::formatPluginVersions(str);
     str << '\n' << coreplugin->copyright() << '\n';
     displayHelpText(version);
@@ -174,6 +174,8 @@ int main(int argc, char **argv)
             break;
         }
     }
+
+    qDebug() << QObject::tr("coreplugin");
     if (!coreplugin) {
         qCritical("Could not find Core plugin");
         return 1;
