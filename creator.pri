@@ -75,6 +75,7 @@ IDE_APP_PATH = $$IDE_BUILD_TREE/bin
 
     # target output path if not set manually
     isEmpty(IDE_OUTPUT_PATH): IDE_OUTPUT_PATH = $$IDE_BUILD_TREE
+    isEmpty(QTC_PREFIX): QTC_PREFIX = $$IDE_BUILD_TREE/install
 
     IDE_LIBRARY_PATH = $$IDE_OUTPUT_PATH/$$IDE_LIBRARY_BASENAME/$$IDE_APP_TARGET
     IDE_PLUGIN_PATH  = $$IDE_LIBRARY_PATH/plugins
