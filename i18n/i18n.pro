@@ -19,22 +19,16 @@ LRELEASE = $$shell_path($$[QT_INSTALL_BINS]/lrelease)
 LCONVERT = $$shell_path($$[QT_INSTALL_BINS]/lconvert)
 
 wd = $$replace(IDE_SOURCE_TREE, /, $$QMAKE_DIR_SEP)
-!build_pass:message(wd: $$wd)
-
 TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/,.ts)
-!build_pass:message(TRANSLATIONS: $$TRANSLATIONS)
-
+QM_DIR_NAME = i18n
 plugin_sources = $$files($$IDE_SOURCE_TREE/src/plugins/*)
 plugin_sources ~= s,^$$re_escape($$IDE_SOURCE_TREE/),,g$$i_flag
 plugin_sources -= src/plugins/plugins.pro 
 sources = src/app src/libs
-!build_pass:message(plugin_sources: $$plugin_sources)
-!build_pass:message(sources: $$sources)
 
 for(path, INCLUDEPATH): include_options *= -I$$shell_quote($$path)
 #files = $$files($$PWD/*_??.ts)
 files = $$TRANSLATIONS
-!build_pass:message(files: $$files)
 
 #for(file, files) {
 #    lang = $$replace(file, .*_([^/]*)\\.ts, \\1)
@@ -48,18 +42,18 @@ files = $$TRANSLATIONS
 #}
 
 ts-all.commands = cd $$wd && $$LUPDATE $$include_options $$sources $$plugin_sources -ts $$files
-!build_pass:message(commands: cd $$wd && $$LUPDATE $$include_options $$sources -ts $$files)
+!build_pass:message(commands: cd $$wd && $$LUPDATE $$include_options $$sources $$plugin_sources -ts $$files)
 QMAKE_EXTRA_TARGETS += ts-all
 
 updateqm.input = TRANSLATIONS
-updateqm.output = $$IDE_DATA_PATH/translations/${QMAKE_FILE_BASE}.qm
+updateqm.output = $$IDE_DATA_PATH/$$QM_DIR_NAME/${QMAKE_FILE_BASE}.qm
 isEmpty(vcproj):updateqm.variable_out = PRE_TARGETDEPS
 updateqm.commands = $$LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_OUT}
 updateqm.name = LRELEASE ${QMAKE_FILE_IN}
 updateqm.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += updateqm
 
-qmfiles.files = $$prependAll(LANGUAGES, $$IDE_DATA_PATH/translations/,.qm)
-qmfiles.path = $$INSTALL_DATA_PATH/translations
+qmfiles.files = $$prependAll(LANGUAGES, $$IDE_DATA_PATH/$$QM_DIR_NAME/,.qm)
+qmfiles.path = $$INSTALL_DATA_PATH/$$QM_DIR_NAME
 qmfiles.CONFIG += no_check_exist
 INSTALLS += qmfiles

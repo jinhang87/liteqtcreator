@@ -127,7 +127,7 @@ int main(int argc, char **argv)
     qDebug() << "uiLanguages: " << uiLanguages;
 
     const QString &creatorTrPath = QCoreApplication::applicationDirPath()
-            + QLatin1String(SHARE_PATH) + QLatin1String("/translations");
+            + QLatin1String(SHARE_PATH) + QLatin1String("/i18n");
     qDebug() << "creatorTrPath: " << creatorTrPath;
     foreach (QString locale, uiLanguages) {
         locale = QLocale(locale).name();

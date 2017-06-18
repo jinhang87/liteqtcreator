@@ -9,5 +9,5 @@ include(creator.pri)
 TEMPLATE  = subdirs
 CONFIG   += ordered
 
-SUBDIRS = src
+SUBDIRS = i18n src
 
