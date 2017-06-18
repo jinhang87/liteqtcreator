@@ -9,6 +9,5 @@ include(creator.pri)
 TEMPLATE  = subdirs
 CONFIG   += ordered
 
-SUBDIRS = i18n src
-TRANSLATIONS += $${IDE_APP_TARGET}_zh_CN.ts
+SUBDIRS = src
 

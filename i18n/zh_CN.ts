@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="zh_CN">
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/app/main.cpp" line="+61"/>
         <source> based on Qt </source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">基于Qt</translation>
     </message>
     <message>
-        <location line="+105"/>
+        <location filename="../src/app/main.cpp" line="+165"/>
         <source>pluginPaths</source>
-        <translation type="unfinished"></translation>
+        <translation>插件路径</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>coreplugin</source>
-        <translation type="unfinished"></translation>
+        <translation>核心插件</translation>
     </message>
 </context>
 <context>
@@ -165,6 +164,27 @@ Reason: %3</source>
         <location line="-7"/>
         <source>Argument: &quot;%1&quot; is empty</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>mainmenu</name>
+    <message>
+        <location filename="../src/plugins/coreplugin/mainmenu.ui"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ioMenuIconFactory</name>
+    <message>
+        <location filename="../src/plugins/subplugin/iomenuiconfactory.cpp" line="+16"/>
+        <source>button</source>
+        <translation>按钮</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>label</source>
+        <translation>标签</translation>
     </message>
 </context>
 </TS>

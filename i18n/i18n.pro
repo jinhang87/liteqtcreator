@@ -1,11 +1,6 @@
 TEMPLATE = aux
 
 include(../creator.pri)
-!build_pass:message(IDE_OUTPUT_PATH: $$IDE_OUTPUT_PATH)
-!build_pass:message(IDE_SOURCE_TREE: $$IDE_SOURCE_TREE)
-!build_pass:message(IDE_BIN_PATH: $$IDE_BIN_PATH)
-!build_pass:message(INSTALL_APP_PATH: $$INSTALL_APP_PATH)
-!build_pass:message(INSTALL_DATA_PATH: $$INSTALL_DATA_PATH)
 
 #LANGUAGES = cs de fr ja pl ru sl uk zh_CN zh_TW
 LANGUAGES = zh_CN
@@ -22,9 +17,6 @@ defineReplace(prependAll) {
 LUPDATE = $$shell_path($$[QT_INSTALL_BINS]/lupdate) -locations relative -no-ui-lines -no-sort
 LRELEASE = $$shell_path($$[QT_INSTALL_BINS]/lrelease)
 LCONVERT = $$shell_path($$[QT_INSTALL_BINS]/lconvert)
-!build_pass:message(LUPDATE : $$LUPDATE)
-!build_pass:message(LRELEASE : $$LRELEASE)
-!build_pass:message(LCONVERT : $$LCONVERT)
 
 wd = $$replace(IDE_SOURCE_TREE, /, $$QMAKE_DIR_SEP)
 !build_pass:message(wd: $$wd)
@@ -44,22 +36,20 @@ for(path, INCLUDEPATH): include_options *= -I$$shell_quote($$path)
 files = $$TRANSLATIONS
 !build_pass:message(files: $$files)
 
-for(file, files) {
-    lang = $$replace(file, .*_([^/]*)\\.ts, \\1)
-    v = ts-$${lang}.commands
-    $$v = cd $$wd && $$LUPDATE $$include_options $$sources -ts $$file
-    !build_pass:message(v: $$v)
-    !build_pass:message(commands: cd $$wd && $$LUPDATE $$include_options $$sources -ts $$file)
-    v = ts-$${lang}.depends
-    $$v = extract
-    QMAKE_EXTRA_TARGETS += ts-$$lang
-}
-ts-all.commands = cd $$wd && $$LUPDATE $$include_options $$sources -ts $$files
-ts-all.depends = extract
+#for(file, files) {
+#    lang = $$replace(file, .*_([^/]*)\\.ts, \\1)
+#    v = ts-$${lang}.commands
+#    $$v = cd $$wd && $$LUPDATE $$include_options $$sources -ts $$file
+#    !build_pass:message(v: $$v)
+#    !build_pass:message(commands: cd $$wd && $$LUPDATE $$include_options $$sources -ts $$file)
+#    v = ts-$${lang}.depends
+#    $$v = extract
+#    QMAKE_EXTRA_TARGETS += ts-$$lang
+#}
+
+ts-all.commands = cd $$wd && $$LUPDATE $$include_options $$sources $$plugin_sources -ts $$files
+!build_pass:message(commands: cd $$wd && $$LUPDATE $$include_options $$sources -ts $$files)
 QMAKE_EXTRA_TARGETS += ts-all
-
-
-!build_pass:message(QMAKE_EXTRA_TARGETS: $$QMAKE_EXTRA_TARGETS)
 
 updateqm.input = TRANSLATIONS
 updateqm.output = $$IDE_DATA_PATH/translations/${QMAKE_FILE_BASE}.qm
@@ -71,7 +61,5 @@ QMAKE_EXTRA_COMPILERS += updateqm
 
 qmfiles.files = $$prependAll(LANGUAGES, $$IDE_DATA_PATH/translations/,.qm)
 qmfiles.path = $$INSTALL_DATA_PATH/translations
-!build_pass:message(path: $$qmfiles.path)
 qmfiles.CONFIG += no_check_exist
 INSTALLS += qmfiles
-!build_pass:message(INSTALLS: $$INSTALLS)

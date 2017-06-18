@@ -58,7 +58,7 @@ static void printVersion(const PluginSpec *coreplugin)
 {
     QString version;
     QTextStream str(&version);
-    str << '\n' << appNameC << ' ' << coreplugin->version()<< QObject::tr(" based on Qt ") << qVersion() << "\n\n";
+    str << '\n' << appNameC << ' ' << coreplugin->version()<< " based on Qt " << qVersion() << "\n\n";
     PluginManager::formatPluginVersions(str);
     str << '\n' << coreplugin->copyright() << '\n';
     displayHelpText(version);
@@ -124,19 +124,18 @@ int main(int argc, char **argv)
     QTranslator qtTranslator;
     QStringList uiLanguages;
     uiLanguages = QLocale::system().uiLanguages();
-    qDebug() << uiLanguages;
+    qDebug() << "uiLanguages: " << uiLanguages;
 
     const QString &creatorTrPath = QCoreApplication::applicationDirPath()
             + QLatin1String(SHARE_PATH) + QLatin1String("/translations");
-    qDebug() << creatorTrPath;
+    qDebug() << "creatorTrPath: " << creatorTrPath;
     foreach (QString locale, uiLanguages) {
         locale = QLocale(locale).name();
-        qDebug() << locale;
-        if (translator.load(QLatin1String(Core::Constants::IDE_TARGET) + QLatin1String("_") + locale, creatorTrPath)) {
+        qDebug() << "locale: " << locale;
+        if (translator.load(locale, creatorTrPath)) {
             const QString &qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
             const QString &qtTrFile = QLatin1String("qt_") + locale;
-            qDebug() << qtTrPath;
-            qDebug() << qtTrFile;
+            qDebug() << "qtTrPathFile: " << qtTrPath << "" << qtTrFile;
             // Binary installer puts Qt tr files into creatorTrPath
             if (qtTranslator.load(qtTrFile, qtTrPath) || qtTranslator.load(qtTrFile, creatorTrPath)) {
                 qDebug() << "installTranslator";
