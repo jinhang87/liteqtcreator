@@ -530,6 +530,7 @@ PluginManagerPrivate::PluginManagerPrivate(PluginManager *pluginManager) :
     globalSettings(0),
     q(pluginManager)
 {
+    initProfiling();
 }
 
 

@@ -191,6 +191,12 @@ int main(int argc, char **argv)
     }
 
     PluginManager::loadPlugins();
+    foreach (PluginSpec *spec, PluginManager::plugins()) {
+        if (spec->hasError()) {
+            qCritical("[%s] plugin is error: %s", qPrintable(spec->name()), qPrintable(coreplugin->errorString()));
+        }
+    }
+
     if (coreplugin->hasError()) {
         qCritical("Core plugin is error: %s", qPrintable(coreplugin->errorString()));
         return 1;

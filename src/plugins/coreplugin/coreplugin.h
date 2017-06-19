@@ -39,10 +39,7 @@ public:
 public slots:
     void fileOpenRequest(const QString&);
 
-
-
 private:
-    //static void addToPathChooserContextMenu(Utils::PathChooser *pathChooser, QMenu *menu);
     mainmenu *m_mainmenu;
 
 };
