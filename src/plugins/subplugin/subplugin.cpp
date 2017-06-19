@@ -30,12 +30,13 @@ bool SubPlugin::initialize(const QStringList &arguments, QString *errorMessage)
     Q_UNUSED(arguments);
     Q_UNUSED(errorMessage);
     addAutoReleasedObject(new ioMenuIconFactory);
+    qDebug() << "SubPlugin::initialize";
     return true;
 }
 
 void SubPlugin::extensionsInitialized()
 {
-
+    qDebug() << "SubPlugin::extensionsInitialized";
 }
 
 bool SubPlugin::delayedInitialize()

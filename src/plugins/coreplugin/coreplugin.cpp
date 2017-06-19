@@ -56,6 +56,7 @@ CoreArguments parseArguments(const QStringList &arguments)
 
 bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage)
 {
+    qDebug() << "CorePlugin::initialize";
     Q_UNUSED(arguments);
     Q_UNUSED(errorMessage);
     m_mainmenu = new mainmenu;
@@ -65,6 +66,7 @@ bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage)
 
 void CorePlugin::extensionsInitialized()
 {
+    qDebug() << "CorePlugin::extensionsInitialized";
     m_mainmenu->extensionsInitialized();
 }
 

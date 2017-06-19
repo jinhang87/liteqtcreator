@@ -7,7 +7,7 @@
     \"Copyright\" : \"HIK\",
     \"License\" : [ \"Free\" ],
     \"Category\" : \"Qt Creator\",
-    \"Description\" : \"The sub plugin.\",
+    \"Description\" : \"sub plugin.\",
     \"Url\" : \"http://www.hikvision.com\",
     $$dependencyList
 }

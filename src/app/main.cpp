@@ -131,15 +131,17 @@ int main(int argc, char **argv)
     qDebug() << "creatorTrPath: " << creatorTrPath;
     foreach (QString locale, uiLanguages) {
         locale = QLocale(locale).name();
+        locale = QLatin1String("zh_CN");
         qDebug() << "locale: " << locale;
         if (translator.load(locale, creatorTrPath)) {
+            qDebug() << "installTranslator creator";
+            app.installTranslator(&translator);
             const QString &qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
             const QString &qtTrFile = QLatin1String("qt_") + locale;
             qDebug() << "qtTrPathFile: " << qtTrPath << "" << qtTrFile;
             // Binary installer puts Qt tr files into creatorTrPath
             if (qtTranslator.load(qtTrFile, qtTrPath) || qtTranslator.load(qtTrFile, creatorTrPath)) {
-                qDebug() << "installTranslator";
-                app.installTranslator(&translator);
+                qDebug() << "installTranslator qt";
                 app.installTranslator(&qtTranslator);
                 app.setProperty("qtc_locale", locale);
                 break;
