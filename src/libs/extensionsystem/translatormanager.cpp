@@ -53,8 +53,7 @@ void TranslatorManagerPrivate::load()
 
     qDebug() << "uiLanguages: " << uiLanguages;
     //QCoreApplication *app = QCoreApplication::instance();
-    const QString &creatorTrPath = QCoreApplication::applicationDirPath()
-            + QLatin1String(SHARE_PATH) + QLatin1String("/i18n");
+    const QString &creatorTrPath = getTrPath();
     qDebug() << "creatorTrPath: " << creatorTrPath;
     foreach (QString locale, uiLanguages) {
         locale = QLocale(locale).name();
@@ -65,7 +64,7 @@ void TranslatorManagerPrivate::load()
         if (m_translators[locale]->load(locale, creatorTrPath)) {
             qDebug() << "installTranslator creator";
             //qApp->installTranslator(m_translaors);
-            const QString &qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+            const QString &qtTrPath = getQtTrPath();
             const QString &qtTrFile = QLatin1String("qt_") + locale;
             qDebug() << "qtTrPathFile: " << qtTrPath << "" << qtTrFile;
             // Binary installer puts Qt tr files into creatorTrPath
