@@ -1,0 +1,13 @@
+{
+    \"Name\" : \"testplugin\",
+    \"Version\" : \"$$PROJ_VERSION\",
+    \"CompatVersion\" : \"$$PROJ_COMPAT_VERSION\",
+    \"Required\" : true,
+    \"Vendor\" : \"HIK\",
+    \"Copyright\" : \"HIK\",
+    \"License\" : [ \"Free\" ],
+    \"Category\" : \"Creator\",
+    \"Description\" : \"test plugin.\",
+    \"Url\" : \"http://www.hikvision.com\",
+    $$dependencyList
+}

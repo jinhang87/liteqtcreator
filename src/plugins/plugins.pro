@@ -4,7 +4,8 @@ TEMPLATE  = subdirs
 
 SUBDIRS   = \
     coreplugin \
-    subplugin
+    subplugin \
+    testplugin
 
 for(p, SUBDIRS) {
     QTC_PLUGIN_DEPENDS =
