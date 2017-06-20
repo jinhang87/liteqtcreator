@@ -34,9 +34,28 @@ void mainmenu::extensionsInitialized()
         qDebug() << "mainmenu::factory->create";
         view.m_button->setGeometry(10,10,200,200);
         view.show();
-
+        m_listIconView << view;
     }
 
+}
+
+void mainmenu::changeEvent(QEvent *event)
+{
+    qDebug() << "mainmenu::changeEvent" << event->type();
+    if(event->type() == QEvent::LanguageChange){
+        this->retranslate();
+        qDebug() << "event->type() = " << event->type();
+    }
+}
+
+void mainmenu::retranslate()
+{
+    qDebug() << "mainmenu::retranslate";
+    m_listIMenuIcons = PluginManager::getObjects<IMenuIconFactory>();
+    int i = 0;
+    for (i = 0; i < m_listIMenuIcons.size(); ++i) {
+        m_listIMenuIcons.at(i)->retranslate(m_listIconView[i]);
+    }
 }
 
 } // namespace Internal

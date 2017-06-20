@@ -19,11 +19,14 @@ HEADERS += \
     pluginmanager.h \
     pluginmanager_p.h \
     pluginspec.h \
-    pluginspec_p.h 
+    pluginspec_p.h \ 
+    translatormanager.h \
+    translatormanager_p.h
 
 SOURCES += \
     invoker.cpp \
     iplugin.cpp \
     pluginmanager.cpp \
-    pluginspec.cpp
+    pluginspec.cpp \
+    translatormanager.cpp
 

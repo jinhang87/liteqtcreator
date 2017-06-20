@@ -10,6 +10,7 @@ class ioMenuIconFactory : public Core::IMenuIconFactory
 public:
     explicit ioMenuIconFactory();
     Core::MenuIconView create(QWidget *parent = 0) override;
+    void retranslate(Core::MenuIconView &view) override;
 signals:
 
 public slots:

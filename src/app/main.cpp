@@ -3,6 +3,8 @@
 #include <extensionsystem/iplugin.h>
 #include <extensionsystem/pluginmanager.h>
 #include <extensionsystem/pluginspec.h>
+#include <extensionsystem/translatormanager.h>
+
 //#include <qtsingleapplication.h>
 
 #include <QDebug>
@@ -120,41 +122,9 @@ int main(int argc, char **argv)
     QThreadPool::globalInstance()->setMaxThreadCount(qMax(4, 2 * threadCount));
 
     // Internationalization
-    QTranslator translator;
-    QTranslator qtTranslator;
-    QStringList uiLanguages;
-    uiLanguages = QLocale::system().uiLanguages();
-    qDebug() << "uiLanguages: " << uiLanguages;
 
-    const QString &creatorTrPath = QCoreApplication::applicationDirPath()
-            + QLatin1String(SHARE_PATH) + QLatin1String("/i18n");
-    qDebug() << "creatorTrPath: " << creatorTrPath;
-    foreach (QString locale, uiLanguages) {
-        locale = QLocale(locale).name();
-        locale = QLatin1String("zh_CN");
-        qDebug() << "locale: " << locale;
-        if (translator.load(locale, creatorTrPath)) {
-            qDebug() << "installTranslator creator";
-            app.installTranslator(&translator);
-            const QString &qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
-            const QString &qtTrFile = QLatin1String("qt_") + locale;
-            qDebug() << "qtTrPathFile: " << qtTrPath << "" << qtTrFile;
-            // Binary installer puts Qt tr files into creatorTrPath
-            if (qtTranslator.load(qtTrFile, qtTrPath) || qtTranslator.load(qtTrFile, creatorTrPath)) {
-                qDebug() << "installTranslator qt";
-                app.installTranslator(&qtTranslator);
-                app.setProperty("qtc_locale", locale);
-                break;
-            }
-            //translator.load(QString()); // unload()
-        } else if (locale == QLatin1String("C") /* overrideLanguage == "English" */) {
-            // use built-in
-            break;
-        } else if (locale.startsWith(QLatin1String("en")) /* "English" is built-in */) {
-            // use built-in
-            break;
-        }
-    }
+    TranslatorManager translatorManager;
+    TranslatorManager::load();
 
     PluginManager pluginManager;
     PluginManager::setPluginIID(QLatin1String("org.hik.mt.mvr.plugin"));

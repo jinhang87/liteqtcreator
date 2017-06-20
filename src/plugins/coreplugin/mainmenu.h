@@ -9,6 +9,7 @@ class mainmenu;
 
 namespace Core {
 class IMenuIconFactory;
+struct MenuIconView;
 
 namespace Internal {
 
@@ -20,10 +21,14 @@ public:
     explicit mainmenu(QWidget *parent = 0);
     ~mainmenu();
     void extensionsInitialized();
+    void changeEvent(QEvent *event) override;
 
 private:
+    void retranslate();
+
     Ui::mainmenu *ui;
     QList<IMenuIconFactory*> m_listIMenuIcons;
+    QList<MenuIconView> m_listIconView;
 };
 
 } // namespace Internal
