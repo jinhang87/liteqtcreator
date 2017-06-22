@@ -59,7 +59,7 @@ bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage)
     qDebug() << "CorePlugin::initialize";
     Q_UNUSED(arguments);
     Q_UNUSED(errorMessage);
-    m_mainmenu = new mainmenu;
+    m_mainmenu.reset(new mainmenu);
     m_mainmenu->show();
     return true;
 }
@@ -85,6 +85,7 @@ ExtensionSystem::IPlugin::ShutdownFlag CorePlugin::aboutToShutdown()
 {
     //Find::aboutToShutdown();
     //m_mainWindow->aboutToShutdown();
-    delete m_mainmenu;
+    //delete m_mainmenu;
+    m_mainmenu.reset();
     return SynchronousShutdown;
 }

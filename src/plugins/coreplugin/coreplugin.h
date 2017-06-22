@@ -40,7 +40,7 @@ public slots:
     void fileOpenRequest(const QString&);
 
 private:
-    mainmenu *m_mainmenu;
+    QScopedPointer<mainmenu> m_mainmenu;
 
 };
 

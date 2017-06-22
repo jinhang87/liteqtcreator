@@ -3,10 +3,6 @@
 #include "imenuiconfactory.h"
 #include <extensionsystem/pluginmanager.h>
 
-#include <QPainter>
-#include <QListWidgetItem>
-#include <QDebug>
-
 using namespace ExtensionSystem;
 
 namespace Core {
@@ -22,6 +18,7 @@ mainmenu::mainmenu(QWidget *parent) :
 
 mainmenu::~mainmenu()
 {
+    qDebug() << "mainmenu::~mainmenu";
     delete ui;
 }
 
