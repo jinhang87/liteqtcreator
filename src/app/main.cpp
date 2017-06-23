@@ -126,10 +126,10 @@ void cbMessageFormat(QtMsgType type, const QMessageLogContext &context, const QS
         fprintf(stderr, "[Warn]:%s:%u, %s\n", context.function, context.line, localMsg.constData());
         break;
     case QtCriticalMsg:
-        fprintf(stderr, "[Critical]: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        fprintf(stderr, "[Critical]:%s:%u, %s\n", context.function, context.line, localMsg.constData());
         break;
     case QtFatalMsg:
-        fprintf(stderr, "[Fatal]: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        fprintf(stderr, "[Fatal]:%s:%u, %s\n", context.function, context.line, localMsg.constData());
         abort();
     }
 }
