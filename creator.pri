@@ -158,6 +158,7 @@ msvc {
     QMAKE_CXXFLAGS_WARN_ON *= -w44996
     # Speed up startup time when debugging with cdb
     QMAKE_LFLAGS_DEBUG += /INCREMENTAL:NO
+    QMAKE_CXXFLAGS += /MP
 }
 
 qt {
