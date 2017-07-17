@@ -16,7 +16,7 @@ public:
     static void load();
     static bool changeLanguage(const QString &name);
 signals:
-
+    void languageChanged(const QString &name);
 public slots:
 
 

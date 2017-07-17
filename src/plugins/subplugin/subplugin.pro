@@ -6,4 +6,7 @@ HEADERS += subplugin.h \
 SOURCES += subplugin.cpp \
     iomenuiconfactory.cpp
 
+RESOURCES += \
+    res.qrc
+
 

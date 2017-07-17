@@ -7,18 +7,19 @@
 using namespace ExtensionSystem;
 using namespace ExtensionSystem::Internal;
 
+static TranslatorManager* m_instance;
 static Internal::TranslatorManagerPrivate *d = 0;
 static const char *SHARE_PATH = "/../share/creator";
 
 TranslatorManager::TranslatorManager(QObject *parent) : QObject(parent)
 {
+    m_instance = this;
     d = new TranslatorManagerPrivate(this);
 }
 
 TranslatorManager *TranslatorManager::instance()
 {
-    static TranslatorManager instance;
-    return &instance;
+    return m_instance;
 }
 
 void TranslatorManager::load()
@@ -91,22 +92,22 @@ void TranslatorManagerPrivate::load()
 
 bool TranslatorManagerPrivate::changeLanguage(const QString &name)
 {
-    qDebug() << "name = " << name;
-
+    bool ret = false;
     if(!m_translators[m_lastLanguage]->isEmpty())
         qApp->removeTranslator(m_translators[m_lastLanguage]);
 
     if(name != QLatin1String("en_US")){
         if(m_translators[name]->load(name, getTrPath())){
-            qApp->installTranslator(m_translators[name]);
+            ret = qApp->installTranslator(m_translators[name]);
         }
     }else{
         if(m_translators[name]->load(name, "")){
-            qApp->installTranslator(m_translators[name]);
+            ret = qApp->installTranslator(m_translators[name]);
         }
     }
 
-    return true;
+    emit q->languageChanged(name);
+    return ret;
 }
 
 const QString TranslatorManagerPrivate::getTrPath()

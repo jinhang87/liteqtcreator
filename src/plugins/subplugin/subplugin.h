@@ -5,6 +5,7 @@
 
 QT_BEGIN_NAMESPACE
 class QMenu;
+class QTranslator;
 QT_END_NAMESPACE
 
 
@@ -31,6 +32,7 @@ public:
 public slots:
 
 private:
-
+    QHash<QString, QTranslator*> m_translators;
+    QString m_lastLanguage;
 };
 
