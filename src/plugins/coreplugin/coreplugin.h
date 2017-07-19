@@ -4,23 +4,14 @@
 #include <extensionsystem/iplugin.h>
 
 QT_BEGIN_NAMESPACE
-class QMenu;
 QT_END_NAMESPACE
-
-
-namespace Utils {
-//class PathChooser;
-//class Theme;
-}
 
 namespace Core {
 
-//class DesignMode;
 
 namespace Internal {
+    
 class mainmenu;
-//class EditMode;
-//class Locator;
 
 class CorePlugin : public ExtensionSystem::IPlugin
 {

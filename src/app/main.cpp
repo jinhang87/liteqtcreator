@@ -137,7 +137,7 @@ void cbMessageFormat(QtMsgType type, const QMessageLogContext &context, const QS
 int main(int argc, char **argv)
 {
     QLoggingCategory::setFilterRules(QLatin1String("qtc.*.debug=false\nqtc.*.info=false"));
-    qInstallMessageHandler(cbMessageFormat);
+    //qInstallMessageHandler(cbMessageFormat);
 
     QApplication app(argc, argv);
 

@@ -83,9 +83,6 @@ void CorePlugin::fileOpenRequest(const QString &f)
 
 ExtensionSystem::IPlugin::ShutdownFlag CorePlugin::aboutToShutdown()
 {
-    //Find::aboutToShutdown();
-    //m_mainWindow->aboutToShutdown();
-    //delete m_mainmenu;
     m_mainmenu.reset();
     return SynchronousShutdown;
 }
